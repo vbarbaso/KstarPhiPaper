@@ -909,7 +909,7 @@ void ParticleRatio_simple()
     gKstarKaRatio_UrQMDOnSmooth->Draw("LX same");
 
     gRatioKstarKa_Thermal->SetLineColor(kMagenta + 2);
-    gRatioKstarKa_Thermal->SetLineStyle(10);
+    gRatioKstarKa_Thermal->SetLineStyle(5);
     gRatioKstarKa_Thermal->SetLineWidth(2);
     gRatioKstarKa_Thermal->Draw("LX same");
 
@@ -1028,7 +1028,7 @@ void ParticleRatio_simple()
     gKstarPhiRatio_EPOSNew_UrQMDOn->Draw("LX same");
 
     gRatioKstarPhi_Thermal->SetLineColor(kMagenta + 2);
-    gRatioKstarPhi_Thermal->SetLineStyle(10);
+    gRatioKstarPhi_Thermal->SetLineStyle(5);
     gRatioKstarPhi_Thermal->SetLineWidth(2);
     gRatioKstarPhi_Thermal->Draw("LX same");
 
@@ -1125,7 +1125,7 @@ void ParticleRatio_simple()
     gPhiKaRatio_EPOSNew_UrQMDOn->Draw("LX same");
 
     gRatioPhiKa_Thermal->SetLineColor(kMagenta + 2);
-    gRatioPhiKa_Thermal->SetLineStyle(10);
+    gRatioPhiKa_Thermal->SetLineStyle(5);
     gRatioPhiKa_Thermal->SetLineWidth(2);
     gRatioPhiKa_Thermal->Draw("LX same");
 
@@ -1217,7 +1217,7 @@ void ParticleRatio_simple()
     gKstarPiRatio_EPOSNew_UrQMDOn->Draw("LX same");
 
     gRatioKstarPi_Thermal->SetLineColor(kMagenta + 2);
-    gRatioKstarPi_Thermal->SetLineStyle(10);
+    gRatioKstarPi_Thermal->SetLineStyle(5);
     gRatioKstarPi_Thermal->SetLineWidth(2);
     gRatioKstarPi_Thermal->Draw("LX same");
 
@@ -1315,7 +1315,7 @@ void ParticleRatio_simple()
     gPhiPiRatio_EPOSNew_UrQMDOn->Draw("LX same");
 
     gRatioPhiPi_Thermal->SetLineColor(kMagenta + 2);
-    gRatioPhiPi_Thermal->SetLineStyle(10);
+    gRatioPhiPi_Thermal->SetLineStyle(5);
     gRatioPhiPi_Thermal->SetLineWidth(2);
     gRatioPhiPi_Thermal->Draw("LX same");
 
@@ -1377,7 +1377,7 @@ void ParticleRatio_simple()
     gPhiXiRatio_EPOSNew_UrQMDOn->Draw("LX same");
 
     gRatioPhiXi_Thermal->SetLineColor(kMagenta + 2);
-    gRatioPhiXi_Thermal->SetLineStyle(10);
+    gRatioPhiXi_Thermal->SetLineStyle(5);
     gRatioPhiXi_Thermal->SetLineWidth(2);
     gRatioPhiXi_Thermal->Draw("LX same");
 
@@ -1482,7 +1482,7 @@ void ParticleRatio_simple()
     gKstarK0sRatio_EPOSNew_UrQMDOn->Draw("LX same");
 
     gRatioKstarK0s_Thermal->SetLineColor(kMagenta + 2);
-    gRatioKstarK0s_Thermal->SetLineStyle(10);
+    gRatioKstarK0s_Thermal->SetLineStyle(5);
     gRatioKstarK0s_Thermal->SetLineWidth(2);
     gRatioKstarK0s_Thermal->Draw("LX same");
 
@@ -1560,7 +1560,7 @@ void ParticleRatio_simple()
     gPhiK0sRatio_EPOSNew_UrQMDOn->Draw("LX same");
 
     gRatioPhiK0s_Thermal->SetLineColor(kMagenta + 2);
-    gRatioPhiK0s_Thermal->SetLineStyle(10);
+    gRatioPhiK0s_Thermal->SetLineStyle(5);
     gRatioPhiK0s_Thermal->SetLineWidth(2);
     gRatioPhiK0s_Thermal->Draw("LX same");
 
@@ -2331,8 +2331,9 @@ void ParticleRatio_simple()
     SetPad(cRatioKstarPhiK0s);
     cRatioKstarPhiK0s->cd();
 
-    TPad *padRatioKstarPhi = makeHorizontalPad("padRatioKstarPhi", "K*0/Phi", 0.0, 0.5, true);
-    TPad *padRatioKstarK0s = makeHorizontalPad("padRatioKstarK0s", "K*0/K0s", 0.5, 1.0, false);
+    TPad *padRatioKstarPhi = makeHorizontalPad("padRatioKstarPhi", "K*0/Phi", 0.0, 0.51, true);
+    TPad *padRatioKstarK0s = makeHorizontalPad("padRatioKstarK0s", "K*0/K0s", 0.51, 1.0, false);
+    padRatioKstarK0s->SetRightMargin(0.15);
 
     auto drawTwoPanelRatio = [&](TVirtualPad *pad,
                                  const char *frameName,
@@ -2356,7 +2357,8 @@ void ParticleRatio_simple()
         TH1D *frame = new TH1D(frameName, "", 100, 1.8, 23.5);
         SetHistStyle(frame);
         frame->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5}");
-        frame->GetYaxis()->SetTitle("dN / dy ratio");
+        if (!rightAxis)
+            frame->GetYaxis()->SetTitle("dN / dy ratio");
         frame->GetXaxis()->SetLimits(1.8, 23.5);
         frame->GetYaxis()->SetRangeUser(yMin, yMax);
         frame->GetYaxis()->SetMaxDigits(3);
@@ -2389,9 +2391,9 @@ void ParticleRatio_simple()
         TGraphErrors *eposOnCopy = (TGraphErrors *)eposOn->Clone(Form("%s_eposOn", frameName));
         TGraphErrors *thermalCopy = (TGraphErrors *)thermal->Clone(Form("%s_thermal", frameName));
 
-        SetGraphStyle(eposOffCopy, colorEPOSWithoutUrQMD, 1.0, 1, 1.0, 2, lineStyleEPOSWithoutUrQMD);
+        SetGraphStyle(eposOffCopy, colorEPOSWithoutUrQMD, 1.0, 1, 1.0, 1, lineStyleEPOSWithoutUrQMD);
         eposOffCopy->Draw("LX SAME");
-        SetGraphStyle(eposOnCopy, colorEPOSWithUrQMD, 1.0, 1, 1.0, 2, lineStyleEPOSWithUrQMD);
+        SetGraphStyle(eposOnCopy, colorEPOSWithUrQMD, 1.0, 1, 1.0, 1, lineStyleEPOSWithUrQMD);
         eposOnCopy->Draw("LX SAME");
 
         thermalCopy->SetLineColor(kMagenta + 2);
@@ -2405,7 +2407,7 @@ void ParticleRatio_simple()
         {
             TGraphErrors *gMod = MakeRatio(gMYield[model][numParticle], gMYield[model][denParticle], true);
             ScaleGraph(gMod, modelScale);
-            SetGraphStyle(gMod, modelStyle[model].color, 1.0, 1, 1.0, 2, modelStyle[model].style);
+            SetGraphStyle(gMod, modelStyle[model].color, 1.0, 1, 1.0, 1, modelStyle[model].style);
             gMod->Draw("L SAME");
             pythiaGraphs.push_back(gMod);
         }
@@ -2470,9 +2472,9 @@ void ParticleRatio_simple()
     cRatioPhiThreePanel->cd();
 
     // Three equal-width pads with comfortable left margins so every y-axis label is visible
-    TPad *padPhiPi = new TPad("padPhiPi", "Phi/Pi", 0.00, 0.0, 0.333, 1.0);
-    TPad *padPhiK0s = new TPad("padPhiK0s", "Phi/K0s", 0.333, 0.0, 0.666, 1.0);
-    TPad *padPhiXi = new TPad("padPhiXi", "Phi/Xi", 0.666, 0.0, 1.00, 1.0);
+    TPad *padPhiPi = new TPad("padPhiPi", "Phi/Pi", 0.00, 0.0, 0.335, 1.0);
+    TPad *padPhiK0s = new TPad("padPhiK0s", "Phi/K0s", 0.335, 0.0, 0.668, 1.0);
+    TPad *padPhiXi = new TPad("padPhiXi", "Phi/Xi", 0.663, 0.0, 1.00, 1.0);
 
     for (TPad *p : {padPhiPi, padPhiK0s, padPhiXi})
     {
@@ -2501,7 +2503,8 @@ void ParticleRatio_simple()
                                     const char *ratioLabel,
                                     bool showInfo,
                                     bool showInfo2,
-                                    bool showModelLegend)
+                                    bool showModelLegend,
+                                    double yTitleOffset)
     {
         pad->cd();
         gStyle->SetLineScalePS(1.5);
@@ -2514,7 +2517,7 @@ void ParticleRatio_simple()
         frame->GetYaxis()->SetRangeUser(yMin, yMax);
         frame->GetYaxis()->SetMaxDigits(3);
         frame->GetYaxis()->SetNdivisions(505);
-        frame->GetYaxis()->SetTitleOffset(1.45);
+        frame->GetYaxis()->SetTitleOffset(yTitleOffset);
         frame->Draw();
 
         if (data != nullptr)
@@ -2539,9 +2542,9 @@ void ParticleRatio_simple()
         TGraphErrors *eposOnCopy = (TGraphErrors *)eposOn->Clone(Form("%s_eposOn", frameName));
         TGraphErrors *thermalCopy = (TGraphErrors *)thermal->Clone(Form("%s_thermal", frameName));
 
-        SetGraphStyle(eposOffCopy, colorEPOSWithoutUrQMD, 1.0, 1, 1.0, 2, lineStyleEPOSWithoutUrQMD);
+        SetGraphStyle(eposOffCopy, colorEPOSWithoutUrQMD, 1.0, 1, 1.0, 1, lineStyleEPOSWithoutUrQMD);
         eposOffCopy->Draw("LX SAME");
-        SetGraphStyle(eposOnCopy, colorEPOSWithUrQMD, 1.0, 1, 1.0, 2, lineStyleEPOSWithUrQMD);
+        SetGraphStyle(eposOnCopy, colorEPOSWithUrQMD, 1.0, 1, 1.0, 1, lineStyleEPOSWithUrQMD);
         eposOnCopy->Draw("LX SAME");
 
         thermalCopy->SetLineColor(kMagenta + 2);
@@ -2554,7 +2557,7 @@ void ParticleRatio_simple()
         {
             TGraphErrors *gMod = MakeRatio(gMYield[model][numParticle], gMYield[model][denParticle], true);
             ScaleGraph(gMod, modelScale);
-            SetGraphStyle(gMod, modelStyle[model].color, 1.0, 1, 1.0, 2, modelStyle[model].style);
+            SetGraphStyle(gMod, modelStyle[model].color, 1.0, 1, 1.0, 1, modelStyle[model].style);
             gMod->Draw("L SAME");
             pythiaGraphs.push_back(gMod);
         }
@@ -2605,14 +2608,14 @@ void ParticleRatio_simple()
                          gRatioPhiPion,
                          gPhiPiRatio_EPOSNew_UrQMDOff, gPhiPiRatio_EPOSNew_UrQMDOn, gRatioPhiPi_Thermal,
                          kPhi, kPion, 2.0,
-                         0.007, 0.028, "dN/dy ratio", "(a)", "#phi / #pi", true, false, false);
+                         0.007, 0.028, "#phi / #pi", "(a)", "#phi / #pi", true, false, false, 1.25);
 
     // Panel (b): Phi / K0s
     drawSpacedRatioPanel(padPhiK0s, "hFrame3Panel_PhiK0s",
                          gRatioPhiK0s,
                          gPhiK0sRatio_EPOSNew_UrQMDOff, gPhiK0sRatio_EPOSNew_UrQMDOn, gRatioPhiK0s_Thermal,
                          kPhi, kKshort, 1.0,
-                         0.07, 0.16, "dN/dy ratio", "(b)", "#phi / K_{S}^{0}", false, true, false);
+                         0.07, 0.16, "#phi / K_{S}^{0}", "(b)", "#phi / K_{S}^{0}", false, true, false, 1.60);
 
     // Panel (c): Phi / Xi
     // Note: gPhiXiRatio_EPOSNew_UrQMDOff/On were already scaled by 0.5 earlier in the macro.
@@ -2622,7 +2625,7 @@ void ParticleRatio_simple()
                          gRatioPhiXi,
                          gPhiXiRatio_EPOSNew_UrQMDOff, gPhiXiRatio_EPOSNew_UrQMDOn, gRatioPhiXi_Thermal,
                          kPhi, kXi, 1.0,
-                         1.1, 4.3, "dN/dy ratio", "(c)", "#phi / #Xi", false, false, true);
+                         1.1, 4.3, "#phi / #Xi", "(c)", "#phi / #Xi", false, false, true, 0.95);
 
     // if (isSavePlots)
     {
