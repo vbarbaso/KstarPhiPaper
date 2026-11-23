@@ -308,7 +308,7 @@ void plotInvMass()
     ltx.SetTextSize(0.055);
 
     // ALICE labels
-    ltx.DrawLatex(0.22, 0.83, "#bf{ALICE}");
+    ltx.DrawLatex(0.22, 0.83, "ALICE Preliminary");
     ltx.DrawLatex(0.22, 0.75, "pp #sqrt{#it{s}} = 13.6 TeV");
     ltx.DrawLatex(0.22, 0.67, "|#it{y}| < 0.5");
 
@@ -537,7 +537,7 @@ void plotInvMass()
 
     hPhiPeak->SetTitle(Form(";M_{KK} (GeV/#it{c}^{2});Counts / (%.3f GeV/#it{c}^{2})", phiBinWidth));
     hPhiPeak->GetXaxis()->SetRangeUser(0.992, 1.058);
-    hPhiPeak->GetYaxis()->SetRangeUser(0.0, hPhiPeak->GetMaximum() * 1.3);
+    hPhiPeak->GetYaxis()->SetRangeUser(0.0, hPhiPeak->GetMaximum() * 1.40);
     hPhiPeak->GetYaxis()->SetTitleOffset(1.3);
 
     SetFunctionStyle(fPhiFit, kRed, 1.0, 2, 1);
@@ -564,7 +564,7 @@ void plotInvMass()
     // Legend
     // -------------------------------------------------------------------------
 
-    TLegend *legPhi2 = new TLegend(0.38, 0.8, 0.73, 0.96);
+    TLegend *legPhi2 = new TLegend(0.35, 0.8, 0.71, 0.96);
     SetLegend(legPhi2);
     legPhi2->AddEntry(hPhiPeak, "Data (stat. uncert.)", "p");
     legPhi2->AddEntry(fPhiFit, "Signal+Background fit", "l");

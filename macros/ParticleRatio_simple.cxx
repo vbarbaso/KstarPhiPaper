@@ -39,7 +39,7 @@ void ParticleRatio_simple()
     //============================================================
     // USER CONFIGURATION: edit paths and plot output settings here
     //============================================================
-    bool isSavePlots = false;
+    bool isSavePlots = true;
     const string plotOutputDirectory = "../figures";
 
     const Color_t colorEPOSWithoutUrQMD = kGreen + 2;
@@ -514,7 +514,7 @@ void ParticleRatio_simple()
     latex.SetNDC();
     latex.SetTextFont(42);
     latex.SetTextSize(0.035);
-    latex.DrawLatex(0.22, 0.9, "ALICE");
+    latex.DrawLatex(0.22, 0.9, "ALICE Preliminary");
     latex.DrawLatex(0.22, 0.78, "|y| < 0.5");
     latex.SetTextFont(22);
     latex.DrawLatex(0.22, 0.84, "K* (892)^{0}");
@@ -645,7 +645,7 @@ void ParticleRatio_simple()
 
     legend->Draw();
     // legend2->Draw();
-    latex.DrawLatex(0.22, 0.9, "ALICE");
+    latex.DrawLatex(0.22, 0.9, "ALICE Preliminary");
     latex.DrawLatex(0.22, 0.78, "|y| < 0.5");
     latex.SetTextFont(22);
     latex.DrawLatex(0.22, 0.84, "K* (892)^{0}");
@@ -937,7 +937,8 @@ void ParticleRatio_simple()
     legendRatio->SetTextSize(0.04);
     legendRatio->AddEntry(gRatioKstarKaon[0], "K*^{0} / K", "p");
 
-    TLegend *legendRatio2 = new TLegend(0.22, 0.66, 0.5, 0.92);
+    // TLegend *legendRatio2 = new TLegend(0.22, 0.66, 0.5, 0.92);
+    TLegend *legendRatio2 = new TLegend(0.32, 0.66, 0.6, 0.92);
     SetLegend(legendRatio2);
     legendRatio2->SetTextSize(0.03);
     legendRatio2->AddEntry(gKstarKaRatio_UrQMDOffSmooth, "EPOS4", "l");
@@ -955,7 +956,7 @@ void ParticleRatio_simple()
 
     legendRatio->Draw();
     // legendRatio2->Draw();
-    latex.DrawLatex(0.31, 0.9, "ALICE");
+    latex.DrawLatex(0.31, 0.9, "ALICE Preliminary");
     latex.DrawLatex(0.31, 0.85, "pp, #sqrt{s} = 13.6 TeV");
     latex.DrawLatex(0.31, 0.80, "|y| < 0.5");
     if (isSavePlots)
@@ -1030,14 +1031,14 @@ void ParticleRatio_simple()
     gRatioKstarPhi_Thermal->SetLineColor(kMagenta + 2);
     gRatioKstarPhi_Thermal->SetLineStyle(5);
     gRatioKstarPhi_Thermal->SetLineWidth(2);
-    gRatioKstarPhi_Thermal->Draw("LX same");
+    // gRatioKstarPhi_Thermal->Draw("LX same");
 
     TLegend *legendRatioKstarPhi = new TLegend(0.52, 0.73, 0.9, 0.94);
     SetLegend(legendRatioKstarPhi);
     legendRatioKstarPhi->SetTextSize(0.03);
     legendRatioKstarPhi->AddEntry(gKstarPhiRatio_EPOSNew_UrQMDOff, "EPOS4", "l");
     legendRatioKstarPhi->AddEntry(gKstarPhiRatio_EPOSNew_UrQMDOn, "EPOS4 + UrQMD", "l");
-    legendRatioKstarPhi->AddEntry(gRatioKstarPhi_Thermal, "Thermal-FIST", "l");
+    // legendRatioKstarPhi->AddEntry(gRatioKstarPhi_Thermal, "Thermal-FIST", "l");
     for (auto model : modelsToPlot)
     {
         TGraphErrors *gRatioKstarPhiModel = MakeRatio(gMYield[model][kKstar], gMYield[model][kPhi], true);
@@ -1048,12 +1049,16 @@ void ParticleRatio_simple()
 
     // legendRatio->Draw();
     // legendRatio2->Draw();
-    latex.DrawLatex(0.22, 0.9, "ALICE");
+    latex.SetTextSize(0.04);
+    latex.SetTextFont(42);
+    latex.DrawLatex(0.22, 0.9, "ALICE Preliminary");
     latex.DrawLatex(0.22, 0.85, "pp, #sqrt{s} = 13.6 TeV");
     latex.DrawLatex(0.22, 0.80, "|y| < 0.5");
-    latex.DrawLatex(0.22, 0.75, "K*^{0} / #Phi");
+    latex.SetTextSize(0.05);
+    latex.SetTextFont(22);
+    latex.DrawLatex(0.70, 0.85, "K*^{0} / #Phi");
 
-    legendRatioKstarPhi->Draw();
+    // legendRatioKstarPhi->Draw();
 
     if (isSavePlots)
     {
@@ -1140,7 +1145,7 @@ void ParticleRatio_simple()
     legendRatio2->Draw();
     latex.SetTextSize(0.035);
     latex.SetTextFont(42);
-    latex.DrawLatex(0.68, 0.88, "ALICE");
+    latex.DrawLatex(0.68, 0.88, "ALICE Preliminary");
     latex.DrawLatex(0.68, 0.83, "pp, #sqrt{s} = 13.6 TeV");
     latex.DrawLatex(0.68, 0.78, "|y| < 0.5");
     latex.DrawLatex(0.68, 0.73, "#Phi / K");
@@ -1239,7 +1244,7 @@ void ParticleRatio_simple()
     // legendRatio2->Draw();
     latex.SetTextSize(0.035);
     latex.SetTextFont(22);
-    latex.DrawLatex(0.22, 0.88, "ALICE");
+    latex.DrawLatex(0.22, 0.88, "ALICE Preliminary");
     latex.DrawLatex(0.22, 0.83, "pp, #sqrt{s} = 13.6 TeV");
     latex.DrawLatex(0.22, 0.78, "|y| < 0.5");
 
@@ -1327,10 +1332,13 @@ void ParticleRatio_simple()
         gRatioPhiPiModel->Draw("l same");
     }
 
-    legendRatio2->Draw();
-    latex.SetTextFont(42);
-    latex.SetTextSize(0.04);
+    // legendRatio2->Draw();
+    latex.SetTextFont(22);
+    latex.SetTextSize(0.05);
     latex.DrawLatex(0.82, 0.85, "#Phi/#pi");
+    latex.SetTextSize(0.04);
+    latex.SetTextFont(42);
+    latex.DrawLatex(0.22, 0.88, "ALICE Preliminary");
 
     if (isSavePlots)
         cRatioPhiPion->SaveAs((plotOutputDirectory + "/Ratio_PhiPion_Run3.pdf").c_str());
@@ -1342,7 +1350,7 @@ void ParticleRatio_simple()
     SetPad(cRatioPhiXi);
     TGraphErrors **gRatioPhiXi = MakeRatioUncorr(gMYieldPhiRun3, gMYieldXiRun3, 1.0, 3);
     gRatioPhiXi[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioPhiXi[0]->GetYaxis()->SetTitle("#Phi / #Xi");
+    gRatioPhiXi[0]->GetYaxis()->SetTitle("dN / dy ratio");
     SetGraphStyle(gRatioPhiXi[0]);
     // gRatioPhiXi[0]->GetYaxis()->SetRangeUser(1.5, 2.6);
     gRatioPhiXi[0]->GetYaxis()->SetRangeUser(1.1, 4.3);
@@ -1395,13 +1403,16 @@ void ParticleRatio_simple()
     // legendRatioPhiXi->AddEntry(gRatioPhiXi[0], "#Phi / #Xi", "p");
     legendRatioPhiXi->AddEntry(gPhiXiRatio_EPOSNew_UrQMDOff, "EPOS4", "l");
     legendRatioPhiXi->AddEntry(gPhiXiRatio_EPOSNew_UrQMDOn, "EPOS4 + UrQMD", "l");
-    legendRatioPhiXi->Draw();
+    // legendRatioPhiXi->Draw();
 
-    latex.SetTextFont(42);
-    latex.SetTextSize(0.04);
-    latex.DrawLatex(0.28, 0.88, "ALICE");
-    latex.DrawLatex(0.28, 0.83, "pp, #sqrt{s} = 13.6 TeV");
-    latex.DrawLatex(0.28, 0.78, "|y| < 0.5");
+    legendRatio2->Draw();
+
+    latex.SetTextFont(22);
+    latex.SetTextSize(0.05);
+    // latex.DrawLatex(0.28, 0.88, "ALICE Preliminary");
+    // latex.DrawLatex(0.28, 0.83, "pp, #sqrt{s} = 13.6 TeV");
+    // latex.DrawLatex(0.28, 0.78, "|y| < 0.5");
+    latex.DrawLatex(0.82, 0.85, "#Phi/#Xi");
 
     if (isSavePlots)
         cRatioPhiXi->SaveAs((plotOutputDirectory + "/Ratio_PhiXi_Run3.pdf").c_str());
@@ -1484,7 +1495,7 @@ void ParticleRatio_simple()
     gRatioKstarK0s_Thermal->SetLineColor(kMagenta + 2);
     gRatioKstarK0s_Thermal->SetLineStyle(5);
     gRatioKstarK0s_Thermal->SetLineWidth(2);
-    gRatioKstarK0s_Thermal->Draw("LX same");
+    // gRatioKstarK0s_Thermal->Draw("LX same");
 
     for (auto model : modelsToPlot)
     {
@@ -1493,9 +1504,10 @@ void ParticleRatio_simple()
         gRatioKstarKshortModel->Draw("l same");
     }
 
-    TLegend *legendRatio4 = new TLegend(0.75, 0.83, 0.9, 0.9);
+    TLegend *legendRatio4 = new TLegend(0.7, 0.83, 0.9, 0.9);
     SetLegend(legendRatio4);
-    legendRatio4->SetTextSize(0.04);
+    legendRatio4->SetTextSize(0.05);
+    legendRatio4->SetTextFont(22);
     legendRatio4->AddEntry(gRatioKstarKshort[0], "K*^{0} / K_{S}^{0}", "p");
     legendRatio4->Draw();
     legendRatio2->Draw();
@@ -1573,10 +1585,15 @@ void ParticleRatio_simple()
 
     TLegend *legendRatio5 = new TLegend(0.75, 0.83, 0.9, 0.9);
     SetLegend(legendRatio5);
-    legendRatio5->SetTextSize(0.04);
+    legendRatio5->SetTextSize(0.05);
+    legendRatio5->SetTextFont(22);
     legendRatio5->AddEntry(gRatioPhiK0s[0], "#Phi / K^{0}_{S}", "p");
     legendRatio5->Draw();
-    legendRatio2->Draw();
+    // legendRatio2->Draw();
+    latex.SetTextFont(42);
+    latex.SetTextSize(0.045);
+    latex.DrawLatex(0.25, 0.88, "pp, #sqrt{s} = 13.6 TeV");
+    latex.DrawLatex(0.25, 0.81, "|y| < 0.5");
 
     if (isSavePlots)
         cRatioPhiK0s->SaveAs((plotOutputDirectory + "/Ratio_PhiK0s_Run3.pdf").c_str());
@@ -1656,7 +1673,7 @@ void ParticleRatio_simple()
 
     if (isSavePlots)
     {
-        cYieldLMRatio->SaveAs((plotOutputDirectory + "/Yield_LMRatio_KstarKaPi_Run3.png").c_str());
+        cYieldLMRatio->SaveAs((plotOutputDirectory + "/Yield_LMRatio_KstarKaPi_Run3.pdf").c_str());
         cYieldLMRatio->SaveAs((plotOutputDirectory + "/Yield_LMRatio_KstarKaPi_Run3.pdf").c_str());
     }
 
@@ -1733,7 +1750,7 @@ void ParticleRatio_simple()
 
     if (isSavePlots)
     {
-        cYieldLMRatioPhi->SaveAs((plotOutputDirectory + "/Yield_LMRatio_PhiKaPi_Run3.png").c_str());
+        cYieldLMRatioPhi->SaveAs((plotOutputDirectory + "/Yield_LMRatio_PhiKaPi_Run3.pdf").c_str());
         cYieldLMRatioPhi->SaveAs((plotOutputDirectory + "/Yield_LMRatio_PhiKaPi_Run3.pdf").c_str());
     }
 
@@ -1983,7 +2000,7 @@ void ParticleRatio_simple()
     // ALICE information
 
     panelLatex.SetTextSize(0.065);
-    panelLatex.DrawLatex(0.22, 0.82, "#bf{ALICE}");
+    panelLatex.DrawLatex(0.22, 0.82, "ALICE Preliminary");
 
     TLegend *legendRun3 = new TLegend(0.2, 0.74, 0.54, 0.8);
     SetLegend(legendRun3);
@@ -2045,7 +2062,7 @@ void ParticleRatio_simple()
     if (isSavePlots)
     {
         cParticleRatios->SaveAs(
-            (plotOutputDirectory + "/ParticleRatios_FourPanel_Run3.png").c_str());
+            (plotOutputDirectory + "/ParticleRatios_FourPanel_Run3.pdf").c_str());
 
         cParticleRatios->SaveAs(
             (plotOutputDirectory + "/ParticleRatios_FourPanel_Run3.pdf").c_str());
@@ -2225,6 +2242,7 @@ void ParticleRatio_simple()
     TCanvas *cMeanPtKstarPhi = new TCanvas("cMeanPtKstarPhi", "Mean pT: K*0 and phi", 850, 450);
     SetPad(cMeanPtKstarPhi);
     cMeanPtKstarPhi->cd();
+
     TPad *padMeanPtKstar = makeHorizontalPad("padMeanPtKstar", "K*0", 0.0, 0.5, true);
     TPad *padMeanPtPhi = makeHorizontalPad("padMeanPtPhi", "phi", 0.5, 1.0, false);
     const PanelAnnotations meanPtKstarAnnotations{
@@ -2238,7 +2256,7 @@ void ParticleRatio_simple()
         0.5,  // x2 for legend
         0.85  // y2 for legend
     };
-    const PanelAnnotations meanPtPhiAnnotations{0.11, 0.88, 0.04, 0.88, 2, 0.4, 0.18, 0.92, 0.48};
+    const PanelAnnotations meanPtPhiAnnotations{0.11, 0.88, 0.04, 0.88, 2, 0.35, 0.18, 0.92, 0.48};
     drawObservablePanel(padMeanPtKstar, "hFrameMeanPtKstarPhi_Kstar",
                         gMPtKstar, gMPtKstarRun2,
                         gEPOS_KstarMeanpT_UrQMDOff, gEPOS_KstarMeanpT_UrQMDOn,
@@ -2247,6 +2265,12 @@ void ParticleRatio_simple()
                         gMPtPhiRun3, gMPtPhiRun2,
                         gEPOS_PhiMeanpT_UrQMDOff, gEPOS_PhiMeanpT_UrQMDOn,
                         kPhi, true, 0.58, 1.76, true, true, "(b)", "#phi", meanPtPhiAnnotations);
+
+    TLatex lat;
+    lat.SetNDC();
+    lat.SetTextFont(42);
+    lat.SetTextSize(0.05);
+    lat.DrawLatex(0.40, 0.86, "ALICE Preliminary");
 
     // K*0 and phi dN/dy side-by-side.
     TCanvas *cYieldKstarPhi = new TCanvas("cYieldKstarPhi", "dN/dy: K*0 and phi", 850, 450);
@@ -2266,7 +2290,7 @@ void ParticleRatio_simple()
         0.5,  // x2 for legend
         0.85  // y2 for legend
     };
-    const PanelAnnotations yieldPhiAnnotations{0.11, 0.88, 0.04, 0.88, 2, 0.04, 0.55, 0.5, 0.85};
+    const PanelAnnotations yieldPhiAnnotations{0.11, 0.88, 0.04, 0.88, 2, 0.035, 0.55, 0.5, 0.85};
     drawObservablePanel(padYieldKstar, "hFrameYieldKstarPhi_Kstar",
                         gMYieldKstar, gMYieldKstarRun2,
                         gEPOS_KstardNdy_UrQMDOff, gEPOS_KstardNdy_UrQMDOn,
@@ -2275,6 +2299,8 @@ void ParticleRatio_simple()
                         gMYieldPhiRun3, gMYieldPhiRun2,
                         gEPOS_PhidNdy_UrQMDOff, gEPOS_PhidNdy_UrQMDOn,
                         kPhi, false, 0.0, 0.31, true, true, "(b)", "#phi", yieldPhiAnnotations);
+
+    lat.DrawLatex(0.40, 0.86, "ALICE Preliminary");
 
     // 2x2 summary: mean pT across the top row and dN/dy across the bottom.
     TCanvas *cMeanPtYieldKstarPhi = new TCanvas(
@@ -2301,7 +2327,7 @@ void ParticleRatio_simple()
     panelLatex2.SetNDC();
     panelLatex2.SetTextFont(42);
     panelLatex2.SetTextSize(0.055);
-    panelLatex2.DrawLatex(0.72, 0.83, "#bf{ALICE}");
+    panelLatex2.DrawLatex(0.62, 0.83, "ALICE Preliminary");
 
     cMeanPtYieldKstarPhi->cd(2);
     drawObservablePanel(gPad, "hFrameMeanPtYieldKstarPhi_PhiPt",
@@ -2321,12 +2347,9 @@ void ParticleRatio_simple()
 
     // if (isSavePlots)
     {
-        // cMeanPtKstarPhi->SaveAs((plotOutputDirectory + "/MeanPt_KstarPhi_Run3.pdf").c_str());
-        // cMeanPtKstarPhi->SaveAs((plotOutputDirectory + "/MeanPt_KstarPhi_Run3.png").c_str());
-        // cYieldKstarPhi->SaveAs((plotOutputDirectory + "/dNdy_KstarPhi_Run3.pdf").c_str());
-        // cYieldKstarPhi->SaveAs((plotOutputDirectory + "/dNdy_KstarPhi_Run3.png").c_str());
+        cMeanPtKstarPhi->SaveAs((plotOutputDirectory + "/MeanPt_KstarPhi_Run3.pdf").c_str());
+        cYieldKstarPhi->SaveAs((plotOutputDirectory + "/dNdy_KstarPhi_Run3.pdf").c_str());
         cMeanPtYieldKstarPhi->SaveAs((plotOutputDirectory + "/MeanPtYield_KstarPhi_Run3.pdf").c_str());
-        // cMeanPtYieldKstarPhi->SaveAs((plotOutputDirectory + "/MeanPtYield_KstarPhi_Run3.png").c_str());
     }
 
     //======================================================
@@ -2427,11 +2450,11 @@ void ParticleRatio_simple()
 
         if (showDataLegend)
         {
-            txt.SetTextSize(0.052);
-            txt.DrawLatex(0.65, 0.87, "#bf{ALICE}");
+            txt.SetTextSize(0.045);
+            txt.DrawLatex(0.63, 0.87, "ALICE Preliminary");
             TLegend *legData = new TLegend(0.57, 0.75, 0.90, 0.85);
             SetLegend(legData);
-            legData->SetTextSize(0.038);
+            legData->SetTextSize(0.04);
             legData->AddEntry((TObject *)0, "pp, #sqrt{s} = 13.6 TeV", "");
             legData->AddEntry((TObject *)0, "|y| < 0.5", "");
             legData->Draw();
@@ -2576,8 +2599,8 @@ void ParticleRatio_simple()
 
         if (showInfo)
         {
-            txt.SetTextSize(0.052);
-            txt.DrawLatex(0.65, 0.84, "#bf{ALICE}");
+            txt.SetTextSize(0.045);
+            txt.DrawLatex(0.6, 0.84, "ALICE Preliminary");
         }
 
         if (showInfo2)
@@ -2585,7 +2608,7 @@ void ParticleRatio_simple()
 
             TLegend *legData = new TLegend(0.57, 0.80, 0.90, 0.90);
             SetLegend(legData);
-            legData->SetTextSize(0.038);
+            legData->SetTextSize(0.04);
             legData->AddEntry((TObject *)0, "pp, #sqrt{s} = 13.6 TeV", "");
             legData->AddEntry((TObject *)0, "|y| < 0.5", "");
             legData->Draw();
@@ -2631,12 +2654,83 @@ void ParticleRatio_simple()
                          kPhi, kXi, 1.0,
                          1.1, 4.3, "#phi / #Xi", "(c)", "#phi / #Xi", false, false, true, 0.95);
 
+    //======================================================
+    // 3. ADDITIONAL TWO-PANEL RATIO PLOT: K*0 / Phi and K*0 / K
+    //    The original K*0 / K0s canvas above is kept unchanged.
+    //======================================================
+    TCanvas *cRatioKstarPhiKaon = new TCanvas("cRatioKstarPhiKaon", "Ratios: K*0/Phi and K*0/K", 850, 450);
+    SetPad(cRatioKstarPhiKaon);
+    cRatioKstarPhiKaon->cd();
+
+    TPad *padRatioKstarPhiKaon = makeHorizontalPad("padRatioKstarPhiKaon", "K*0/Phi", 0.0, 0.51, true);
+    TPad *padRatioKstarKaon = makeHorizontalPad("padRatioKstarKaon", "K*0/K", 0.51, 1.0, false);
+    padRatioKstarKaon->SetRightMargin(0.15);
+
+    drawTwoPanelRatio(padRatioKstarPhiKaon, "hFrame2Panel_KstarPhi_ChargedKaon",
+                      gRatioKstarPhi,
+                      gKstarPhiRatio_EPOSNew_UrQMDOff, gKstarPhiRatio_EPOSNew_UrQMDOn, gRatioKstarPhi_Thermal,
+                      kKstar, kPhi, 1.0,
+                      2.1, 5.15, false, "(a)", "K*^{0} / #phi", true, false);
+
+    drawTwoPanelRatio(padRatioKstarKaon, "hFrame2Panel_KstarKaon",
+                      gRatioKstarKaon,
+                      gKstarKaRatio_UrQMDOffSmooth, gKstarKaRatio_UrQMDOnSmooth, gRatioKstarKa_Thermal,
+                      kKstar, kKaon, 2.0,
+                      0.252, 0.48, true, "(b)", "K*^{0} / K", false, true);
+
+    //======================================================
+    // 4. ADDITIONAL THREE-PANEL RATIO PLOT:
+    //    Phi / Pi, Phi / K, Phi / Xi
+    //    The original Phi / K0s canvas above is kept unchanged.
+    //======================================================
+    TCanvas *cRatioPhiKaonThreePanel = new TCanvas("cRatioPhiKaonThreePanel", "Ratios: Phi/Pi, Phi/K, Phi/Xi", 1350, 460);
+    SetPad(cRatioPhiKaonThreePanel);
+    cRatioPhiKaonThreePanel->cd();
+
+    TPad *padPhiPiKaon = new TPad("padPhiPiKaon", "Phi/Pi", 0.00, 0.0, 0.335, 1.0);
+    TPad *padPhiKaon = new TPad("padPhiKaon", "Phi/K", 0.335, 0.0, 0.668, 1.0);
+    TPad *padPhiXiKaon = new TPad("padPhiXiKaon", "Phi/Xi", 0.663, 0.0, 1.00, 1.0);
+
+    for (TPad *p : {padPhiPiKaon, padPhiKaon, padPhiXiKaon})
+    {
+        p->SetLeftMargin(0.19);
+        p->SetRightMargin(0.04);
+        p->SetTopMargin(0.07);
+        p->SetBottomMargin(0.15);
+        p->SetTickx(1);
+        p->SetTicky(1);
+        p->Draw();
+    }
+
+    drawSpacedRatioPanel(padPhiPiKaon, "hFrame3Panel_PhiPi_ChargedKaon",
+                         gRatioPhiPion,
+                         gPhiPiRatio_EPOSNew_UrQMDOff, gPhiPiRatio_EPOSNew_UrQMDOn, gRatioPhiPi_Thermal,
+                         kPhi, kPion, 2.0,
+                         0.007, 0.028, "#phi / #pi", "(a)", "#phi / #pi", true, false, false, 1.25);
+
+    drawSpacedRatioPanel(padPhiKaon, "hFrame3Panel_PhiKaon",
+                         gRatioPhiK,
+                         gPhiKaRatio_UrQMDOffSmooth, gPhiKaRatio_UrQMDOnSmooth, gRatioPhiKa_Thermal,
+                         kPhi, kKaon, 2.0,
+                         0.07, 0.16, "#phi / K", "(b)", "#phi / K", false, true, false, 1.60);
+
+    drawSpacedRatioPanel(padPhiXiKaon, "hFrame3Panel_PhiXi_ChargedKaon",
+                         gRatioPhiXi,
+                         gPhiXiRatio_EPOSNew_UrQMDOff, gPhiXiRatio_EPOSNew_UrQMDOn, gRatioPhiXi_Thermal,
+                         kPhi, kXi, 1.0,
+                         1.1, 4.3, "#phi / #Xi", "(c)", "#phi / #Xi", false, false, true, 0.95);
+
+    // Save both original and additional canvases.
+    // if (isSavePlots)
+    {
+        cRatioKstarPhiKaon->SaveAs((plotOutputDirectory + "/Ratio_KstarPhi_KstarK_TwoPanel_Run3.pdf").c_str());
+        cRatioPhiKaonThreePanel->SaveAs((plotOutputDirectory + "/Ratio_PhiPi_PhiK_PhiXi_ThreePanel_Run3.pdf").c_str());
+    }
+
     // if (isSavePlots)
     {
         cRatioKstarPhiK0s->SaveAs((plotOutputDirectory + "/Ratio_KstarPhi_KstarK0s_TwoPanel_Run3.pdf").c_str());
-        // cRatioKstarPhiK0s->SaveAs((plotOutputDirectory + "/Ratio_KstarPhi_KstarK0s_TwoPanel_Run3.png").c_str());
         cRatioPhiThreePanel->SaveAs((plotOutputDirectory + "/Ratio_PhiPi_PhiK0s_PhiXi_ThreePanel_Run3.pdf").c_str());
-        // cRatioPhiThreePanel->SaveAs((plotOutputDirectory + "/Ratio_PhiPi_PhiK0s_PhiXi_ThreePanel_Run3.png").c_str());
     }
 }
 

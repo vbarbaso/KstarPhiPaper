@@ -308,7 +308,7 @@ namespace
         txt->SetTextAlign(31);
         txt->SetTextSize(.035);
         txt->SetTextFont(42);
-        txt->AddText("#bf{ALICE}");
+        txt->AddText("ALICE Preliminary");
         txt->AddText("pp, 13.6 TeV");
         txt->AddText("|y| < 0.5");
         txt->AddText(s.label);
@@ -676,10 +676,10 @@ void DrawCombined(const Species &ks, const Species &phi,
             latex.SetNDC();
             latex.SetTextFont(42);
             latex.SetTextSize(0.05);
-            latex.DrawLatex(0.68, 0.87, "#bf{ALICE}");
-            latex.SetTextSize(0.04);
-            latex.DrawLatex(0.55, 0.82, "pp, #sqrt{#it{s}} = 13.6 TeV");
-            latex.DrawLatex(0.68, 0.77, "|y| < 0.5");
+            latex.DrawLatex(0.58, 0.89, "ALICE Preliminary");
+            latex.SetTextSize(0.045);
+            latex.DrawLatex(0.58, 0.84, "pp, #sqrt{#it{s}} = 13.6 TeV");
+            latex.DrawLatex(0.68, 0.78, "|y| < 0.5");
             latex.DrawLatex(0.69, 0.72, s.label);
 
             latex.SetTextSize(0.03);
@@ -690,8 +690,8 @@ void DrawCombined(const Species &ks, const Species &phi,
             TLatex KstarLabel;
             KstarLabel.SetNDC();
             KstarLabel.SetTextFont(42);
-            KstarLabel.SetTextSize(0.04);
-            KstarLabel.DrawLatex(0.85, 0.87, s.label);
+            KstarLabel.SetTextSize(0.045);
+            KstarLabel.DrawLatex(0.82, 0.87, s.label);
         }
 
         // --------------------------------------------------------

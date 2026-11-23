@@ -431,8 +431,8 @@ namespace KstarXT
             label.SetTextSize(0.065);
             label.DrawLatex(0.87, 0.87, "K*^{0}");
 
-            label.SetTextSize(0.055);
-            label.DrawLatex(0.23, 0.87, "#bf{ALICE}");
+            label.SetTextSize(0.045);
+            label.DrawLatex(0.23, 0.87, "ALICE Preliminary");
             label.SetTextSize(0.045);
             label.DrawLatex(0.23, 0.81, "pp, |y| < 0.5");
         }
@@ -522,8 +522,8 @@ namespace KstarXT
             // xLabel.SetTextSize(0.045);
             // xLabel.DrawLatex(0.74, 0.81, "pp, |y| < 0.5");
 
-            xLabel.SetTextSize(0.065);
-            xLabel.DrawLatex(0.87, 0.87, "K*^{0}");
+            xLabel.SetTextSize(0.045);
+            xLabel.DrawLatex(0.78, 0.76, "K*(892)^{0}");
         }
     }
 } // namespace KstarXT
@@ -931,13 +931,13 @@ namespace PhiXT
             labelXT.SetNDC();
             labelXT.SetTextFont(42);
 
-            labelXT.SetTextSize(0.055);
-            labelXT.DrawLatex(0.62, 0.80, "#bf{ALICE}");
             labelXT.SetTextSize(0.045);
-            labelXT.DrawLatex(0.56, 0.74, "pp, |y| < 0.5");
+            labelXT.DrawLatex(0.45, 0.88, "ALICE Preliminary");
+            labelXT.SetTextSize(0.045);
+            labelXT.DrawLatex(0.52, 0.82, "pp, |y| < 0.5");
 
-            labelXT.SetTextSize(0.065);
-            labelXT.DrawLatex(0.74, 0.88, "#phi");
+            labelXT.SetTextSize(0.045);
+            labelXT.DrawLatex(0.55, 0.75, "#phi(1020)");
         }
     }
 } // namespace PhiXT
@@ -1346,8 +1346,8 @@ namespace CrossSectionPlot
         TLatex label;
         label.SetNDC();
         label.SetTextFont(42);
-        label.SetTextSize(0.045);
-        label.DrawLatex(0.5, 0.88, "#bf{ALICE}");
+        label.SetTextSize(0.04);
+        label.DrawLatex(0.45, 0.88, "ALICE Preliminary");
         label.SetTextSize(0.038);
         label.DrawLatex(0.5, 0.83, "pp, #sqrt{s} = 13.6 TeV, |y| < 0.5");
 
