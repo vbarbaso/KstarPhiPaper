@@ -880,7 +880,7 @@ void ParticleRatio_simple()
 
     TGraphErrors **gRatioKstarKaon = MakeRatioUncorr(gMYieldKstar, gMYieldKaon, 1.0, 3);
     gRatioKstarKaon[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioKstarKaon[0]->GetYaxis()->SetTitle("dN / dy ratio");
+    gRatioKstarKaon[0]->GetYaxis()->SetTitle("K*^{0} / K");
     SetGraphStyle(gRatioKstarKaon[0]);
     gRatioKstarKaon[0]->GetYaxis()->SetRangeUser(0.245, 0.44);
     gRatioKstarKaon[0]->GetXaxis()->SetLimits(1.8, 23.5);
@@ -935,7 +935,7 @@ void ParticleRatio_simple()
     TLegend *legendRatio = new TLegend(0.65, 0.85, 0.9, 0.92);
     SetLegend(legendRatio);
     legendRatio->SetTextSize(0.04);
-    legendRatio->AddEntry(gRatioKstarKaon[0], "K*^{0} / K", "p");
+    // legendRatio->AddEntry(gRatioKstarKaon[0], "K*^{0} / K", "p");
 
     // TLegend *legendRatio2 = new TLegend(0.22, 0.66, 0.5, 0.92);
     TLegend *legendRatio2 = new TLegend(0.32, 0.66, 0.6, 0.92);
@@ -972,7 +972,7 @@ void ParticleRatio_simple()
     TGraphErrors **gRatioKstarPhi = MakeRatioUncorr(gMYieldKstar, gMYieldPhiRun3, 1.0, 3);
     // TGraphErrors **gRatioKstarPhiRun2 = MakeRatioUncorr(gMYieldKstarRun2, gMYieldPhiRun2, 1.0, 3);
     gRatioKstarPhi[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioKstarPhi[0]->GetYaxis()->SetTitle("dN / dy ratio");
+    gRatioKstarPhi[0]->GetYaxis()->SetTitle("K*^{0} / #phi");
     SetGraphStyle(gRatioKstarPhi[0]);
     gRatioKstarPhi[0]->GetYaxis()->SetRangeUser(2.1, 5.15);
     gRatioKstarPhi[0]->GetXaxis()->SetLimits(1.8, 23.5);
@@ -1056,7 +1056,7 @@ void ParticleRatio_simple()
     latex.DrawLatex(0.22, 0.80, "|y| < 0.5");
     latex.SetTextSize(0.05);
     latex.SetTextFont(22);
-    latex.DrawLatex(0.70, 0.85, "K*^{0} / #Phi");
+    // latex.DrawLatex(0.70, 0.85, "K*^{0} / #Phi");
 
     // legendRatioKstarPhi->Draw();
 
@@ -1072,7 +1072,7 @@ void ParticleRatio_simple()
     SetPad(cRatioPhiK);
     TGraphErrors **gRatioPhiK = MakeRatioUncorr(gMYieldPhiRun3, gMYieldKaon, 1.0, 3);
     gRatioPhiK[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioPhiK[0]->GetYaxis()->SetTitle("dN / dy ratio");
+    gRatioPhiK[0]->GetYaxis()->SetTitle("#phi / K");
     SetGraphStyle(gRatioPhiK[0]);
     gRatioPhiK[0]->GetYaxis()->SetRangeUser(0.07, 0.17);
     gRatioPhiK[0]->GetXaxis()->SetLimits(1.8, 23.5);
@@ -1148,7 +1148,7 @@ void ParticleRatio_simple()
     latex.DrawLatex(0.68, 0.88, "ALICE Preliminary");
     latex.DrawLatex(0.68, 0.83, "pp, #sqrt{s} = 13.6 TeV");
     latex.DrawLatex(0.68, 0.78, "|y| < 0.5");
-    latex.DrawLatex(0.68, 0.73, "#Phi / K");
+    // latex.DrawLatex(0.68, 0.73, "#Phi / K");
 
     if (isSavePlots)
     {
@@ -1162,7 +1162,7 @@ void ParticleRatio_simple()
     SetPad(cRatioKstarPion);
     TGraphErrors **gRatioKstarPion = MakeRatioUncorr(gMYieldKstar, gMYieldPion, 1.0, 3);
     gRatioKstarPion[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioKstarPion[0]->GetYaxis()->SetTitle("dN / dy ratio");
+    gRatioKstarPion[0]->GetYaxis()->SetTitle("K*^{0} / #pi");
     SetGraphStyle(gRatioKstarPion[0]);
     // gRatioKstarPion[0]->GetYaxis()->SetRangeUser(0.029, 0.158);
     gRatioKstarPion[0]->GetYaxis()->SetRangeUser(0.031, 0.062);
@@ -1239,7 +1239,7 @@ void ParticleRatio_simple()
     SetLegend(legendRatio3);
     legendRatio3->SetTextSize(0.04);
     legendRatio3->Clear();
-    legendRatio3->AddEntry(gRatioKstarPion[0], "K*^{0} / #pi", "p");
+    // legendRatio3->AddEntry(gRatioKstarPion[0], "K*^{0} / #pi", "p");
     legendRatio3->Draw();
     // legendRatio2->Draw();
     latex.SetTextSize(0.035);
@@ -1260,7 +1260,7 @@ void ParticleRatio_simple()
     SetPad(cRatioPhiPion);
     TGraphErrors **gRatioPhiPion = MakeRatioUncorr(gMYieldPhiRun3, gMYieldPion, 1.0, 3);
     gRatioPhiPion[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioPhiPion[0]->GetYaxis()->SetTitle("dN / dy ratio");
+    gRatioPhiPion[0]->GetYaxis()->SetTitle("#phi / #pi");
     SetGraphStyle(gRatioPhiPion[0]);
     gRatioPhiPion[0]->GetYaxis()->SetRangeUser(7e-3, 28e-3);
     gRatioPhiPion[0]->GetXaxis()->SetLimits(1.8, 23.5);
@@ -1335,7 +1335,7 @@ void ParticleRatio_simple()
     // legendRatio2->Draw();
     latex.SetTextFont(22);
     latex.SetTextSize(0.05);
-    latex.DrawLatex(0.82, 0.85, "#Phi/#pi");
+    // latex.DrawLatex(0.82, 0.85, "#Phi/#pi");
     latex.SetTextSize(0.04);
     latex.SetTextFont(42);
     latex.DrawLatex(0.22, 0.88, "ALICE Preliminary");
@@ -1350,7 +1350,7 @@ void ParticleRatio_simple()
     SetPad(cRatioPhiXi);
     TGraphErrors **gRatioPhiXi = MakeRatioUncorr(gMYieldPhiRun3, gMYieldXiRun3, 1.0, 3);
     gRatioPhiXi[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioPhiXi[0]->GetYaxis()->SetTitle("dN / dy ratio");
+    gRatioPhiXi[0]->GetYaxis()->SetTitle("#phi / #Xi");
     SetGraphStyle(gRatioPhiXi[0]);
     // gRatioPhiXi[0]->GetYaxis()->SetRangeUser(1.5, 2.6);
     gRatioPhiXi[0]->GetYaxis()->SetRangeUser(1.1, 4.3);
@@ -1412,7 +1412,7 @@ void ParticleRatio_simple()
     // latex.DrawLatex(0.28, 0.88, "ALICE Preliminary");
     // latex.DrawLatex(0.28, 0.83, "pp, #sqrt{s} = 13.6 TeV");
     // latex.DrawLatex(0.28, 0.78, "|y| < 0.5");
-    latex.DrawLatex(0.82, 0.85, "#Phi/#Xi");
+    // latex.DrawLatex(0.82, 0.85, "#Phi/#Xi");
 
     if (isSavePlots)
         cRatioPhiXi->SaveAs((plotOutputDirectory + "/Ratio_PhiXi_Run3.pdf").c_str());
@@ -1424,7 +1424,7 @@ void ParticleRatio_simple()
     SetPad(cRatioKstarKshort);
     TGraphErrors **gRatioKstarKshort = MakeRatioUncorr(gMYieldKstar, gMYieldKshortRun3, 1.0, 3);
     gRatioKstarKshort[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioKstarKshort[0]->GetYaxis()->SetTitle("dN / dy ratio");
+    gRatioKstarKshort[0]->GetYaxis()->SetTitle("K*^{0} / K^{0}_{S}");
     SetGraphStyle(gRatioKstarKshort[0]);
     gRatioKstarKshort[0]->GetYaxis()->SetRangeUser(0.245, 0.54);
     gRatioKstarKshort[0]->GetXaxis()->SetLimits(1.8, 23.5);
@@ -1508,7 +1508,7 @@ void ParticleRatio_simple()
     SetLegend(legendRatio4);
     legendRatio4->SetTextSize(0.05);
     legendRatio4->SetTextFont(22);
-    legendRatio4->AddEntry(gRatioKstarKshort[0], "K*^{0} / K_{S}^{0}", "p");
+    // legendRatio4->AddEntry(gRatioKstarKshort[0], "K*^{0} / K_{S}^{0}", "p");
     legendRatio4->Draw();
     legendRatio2->Draw();
 
@@ -1524,7 +1524,7 @@ void ParticleRatio_simple()
     SetPad(cRatioPhiK0s);
     TGraphErrors **gRatioPhiK0s = MakeRatioUncorr(gMYieldPhiRun3, gMYieldKshortRun3, 1.0, 3);
     gRatioPhiK0s[0]->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5} ");
-    gRatioPhiK0s[0]->GetYaxis()->SetTitle("dN / dy ratio");
+    gRatioPhiK0s[0]->GetYaxis()->SetTitle("#phi / K^{0}_{S}");
     SetGraphStyle(gRatioPhiK0s[0]);
     gRatioPhiK0s[0]->GetYaxis()->SetRangeUser(0.07, 0.18);
     gRatioPhiK0s[0]->GetXaxis()->SetLimits(1.8, 23.5);
@@ -1587,7 +1587,7 @@ void ParticleRatio_simple()
     SetLegend(legendRatio5);
     legendRatio5->SetTextSize(0.05);
     legendRatio5->SetTextFont(22);
-    legendRatio5->AddEntry(gRatioPhiK0s[0], "#Phi / K^{0}_{S}", "p");
+    // legendRatio5->AddEntry(gRatioPhiK0s[0], "#Phi / K^{0}_{S}", "p");
     legendRatio5->Draw();
     // legendRatio2->Draw();
     latex.SetTextFont(42);
