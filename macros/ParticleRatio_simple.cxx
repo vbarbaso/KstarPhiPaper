@@ -2331,9 +2331,8 @@ void ParticleRatio_simple()
     SetPad(cRatioKstarPhiK0s);
     cRatioKstarPhiK0s->cd();
 
-    TPad *padRatioKstarPhi = makeHorizontalPad("padRatioKstarPhi", "K*0/Phi", 0.0, 0.51, true);
-    TPad *padRatioKstarK0s = makeHorizontalPad("padRatioKstarK0s", "K*0/K0s", 0.51, 1.0, false);
-    padRatioKstarK0s->SetRightMargin(0.15);
+    TPad *padRatioKstarPhi = makeHorizontalPad("padRatioKstarPhi", "K*0/Phi", 0.0, 0.5, true);
+    TPad *padRatioKstarK0s = makeHorizontalPad("padRatioKstarK0s", "K*0/K0s", 0.5, 1.0, false);
 
     auto drawTwoPanelRatio = [&](TVirtualPad *pad,
                                  const char *frameName,
@@ -2357,13 +2356,12 @@ void ParticleRatio_simple()
         TH1D *frame = new TH1D(frameName, "", 100, 1.8, 23.5);
         SetHistStyle(frame);
         frame->GetXaxis()->SetTitle("#LT dN_{ch}/d#eta #GT_{|#eta|<0.5}");
-        if (!rightAxis)
-            frame->GetYaxis()->SetTitle("dN / dy ratio");
+        frame->GetYaxis()->SetTitle(ratioLabel);
         frame->GetXaxis()->SetLimits(1.8, 23.5);
         frame->GetYaxis()->SetRangeUser(yMin, yMax);
         frame->GetYaxis()->SetMaxDigits(3);
         frame->GetYaxis()->SetNdivisions(505);
-        frame->GetYaxis()->SetTitleOffset(rightAxis ? 1.25 : 1.35);
+        frame->GetYaxis()->SetTitleOffset(rightAxis ? 1.45 : 1.35);
 
         if (rightAxis)
             frame->Draw("Y+");
@@ -2418,7 +2416,7 @@ void ParticleRatio_simple()
         txt.SetTextSize(0.045);
         txt.DrawLatex(rightAxis ? 0.05 : 0.22, 0.87, panelLabel);
         txt.SetTextSize(0.052);
-        txt.DrawLatex(rightAxis ? 0.13 : 0.3, 0.865, ratioLabel);
+        // txt.DrawLatex(rightAxis ? 0.13 : 0.3, 0.865, ratioLabel);
 
         if (showDataLegend)
         {
@@ -2454,14 +2452,14 @@ void ParticleRatio_simple()
                       gRatioKstarPhi,
                       gKstarPhiRatio_EPOSNew_UrQMDOff, gKstarPhiRatio_EPOSNew_UrQMDOn, gRatioKstarPhi_Thermal,
                       kKstar, kPhi, 1.0,
-                      2.1, 5.15, false, "(a)", "K*^{0} / #phi", true, false);
+                      2.1, 5.15, false, "", "K*^{0} / #phi", true, false);
 
     // Panel (b): K*0 / K0s (K*0 averaged, K0s not -> scale = 1.0)
     drawTwoPanelRatio(padRatioKstarK0s, "hFrame2Panel_KstarK0s",
                       gRatioKstarKshort,
                       gKstarK0sRatio_EPOSNew_UrQMDOff, gKstarK0sRatio_EPOSNew_UrQMDOn, gRatioKstarK0s_Thermal,
                       kKstar, kKshort, 1.0,
-                      0.245, 0.54, true, "(b)", "K*^{0} / K_{S}^{0}", false, true);
+                      0.245, 0.54, true, "", "K*^{0} / K_{S}^{0}", false, true);
 
     //======================================================
     // 2. THREE-PANEL RATIO PLOT (3,1) WITH SEPARATE Y-AXES:
