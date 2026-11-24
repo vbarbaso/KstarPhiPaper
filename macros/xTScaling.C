@@ -133,9 +133,7 @@ namespace KstarXT
         return graph;
     }
 
-    TGraphErrors *HistToXTGraph(TH1 *stat, TH1 *relativeSys, double sqrtS,
-                                double sigmaInel, double energyFactor,
-                                bool alreadyNormalizedYield, double averageKstar)
+    TGraphErrors *HistToXTGraph(TH1 *stat, TH1 *relativeSys, double sqrtS, double sigmaInel, double energyFactor, bool alreadyNormalizedYield, double averageKstar)
     {
         auto *result = new TGraphErrors();
         for (int bin = 1; bin <= stat->GetNbinsX(); ++bin)
@@ -229,8 +227,7 @@ namespace KstarXT
         return result;
     }
 
-    TGraphErrors *CalculateN(TGraphErrors *first, TGraphErrors *second,
-                             double sqrtS1, double sqrtS2)
+    TGraphErrors *CalculateN(TGraphErrors *first, TGraphErrors *second, double sqrtS1, double sqrtS2)
     {
         auto *result = new TGraphErrors();
         const double denominator = std::log(sqrtS1 / sqrtS2);
@@ -249,10 +246,7 @@ namespace KstarXT
                 continue;
 
             const double n = -std::log(y1 / interp.value) / denominator;
-            const double en = std::sqrt(
-                                  std::pow(first->GetErrorY(i) / y1, 2) +
-                                  std::pow(interp.error / interp.value, 2)) /
-                              std::abs(denominator);
+            const double en = std::sqrt(std::pow(first->GetErrorY(i) / y1, 2) + std::pow(interp.error / interp.value, 2)) / std::abs(denominator);
             const int point = result->GetN();
             result->SetPoint(point, x, n);
             result->SetPointError(point, 0.0, en);
@@ -260,8 +254,7 @@ namespace KstarXT
         return result;
     }
 
-    TGraphErrors *CalculateN2(TGraphErrors *first, TGraphErrors *second,
-                              double sqrtS1, double sqrtS2)
+    TGraphErrors *CalculateN2(TGraphErrors *first, TGraphErrors *second, double sqrtS1, double sqrtS2)
     {
         // Use the same log-log interpolation and symmetric error propagation
         // as the other K*0 energy comparisons and the Phi calculation.
@@ -282,8 +275,7 @@ namespace KstarXT
 
         auto *hStat136 = GetHisto(fInel, "hINEL_DataCorr_stat");
         auto *hSys136 = GetHisto(fInel, "hINEL_DataCorr_sys");
-        auto *hRelSys136 = MakeRelativeSystematic(
-            hStat136, hSys136, "hKstar136RelativeSys");
+        auto *hRelSys136 = MakeRelativeSystematic(hStat136, hSys136, "hKstar136RelativeSys");
 
         auto *g13 = GetGraph(f13, "Table 4/Graph1D_y1");
         auto *hStat13 = GetHisto(f13, "Table 4/Hist1D_y1_e1");
@@ -929,10 +921,10 @@ namespace PhiXT
             labelXT.SetNDC();
             labelXT.SetTextFont(42);
 
-            labelXT.SetTextSize(0.055);
-            labelXT.DrawLatex(0.62, 0.80, "#bf{ALICE}");
-            labelXT.SetTextSize(0.045);
-            labelXT.DrawLatex(0.56, 0.74, "pp, |y| < 0.5");
+            // labelXT.SetTextSize(0.055);
+            // labelXT.DrawLatex(0.62, 0.80, "#bf{ALICE}");
+            // labelXT.SetTextSize(0.045);
+            // labelXT.DrawLatex(0.56, 0.74, "pp, |y| < 0.5");
 
             labelXT.SetTextSize(0.065);
             labelXT.DrawLatex(0.74, 0.88, "#phi");
@@ -970,18 +962,13 @@ namespace CrossSectionPlot
         {
             const double pt = hFit->GetBinCenter(bin);
 
-            const double statError =
-                hStat->GetBinError(bin) * normalization;
+            const double statError = hStat->GetBinError(bin) * normalization * (1.0 / (2.0 * TMath::Pi() * pt));
 
             // Use the systematic uncertainty convention already
             // used to construct the systematic graph.
-            const double sysError =
-                hSys->GetBinContent(bin) *
-                hStat->GetBinContent(bin) * normalization;
+            const double sysError = hSys->GetBinContent(bin) * hStat->GetBinContent(bin) * normalization * (1.0 / (2.0 * TMath::Pi() * pt));
 
-            const double totalError =
-                std::sqrt(statError * statError +
-                          sysError * sysError);
+            const double totalError = std::sqrt(statError * statError + sysError * sysError);
 
             hFit->SetBinError(bin, totalError);
 
@@ -1001,9 +988,7 @@ namespace CrossSectionPlot
             return nullptr;
         }
 
-        TF1 *fit = new TF1(
-            name, FuncLevy_Sawan,
-            fitMin, fitMax, 4);
+        TF1 *fit = new TF1(name, FuncLevy_Sawan, fitMin, fitMax, 4);
 
         if (!isPhi)
         {
@@ -1067,9 +1052,7 @@ namespace CrossSectionPlot
     };
 
     // Convert d2N/(dpT dy) per INEL event to d2sigma/(dpT dy).
-    Spectrum MakeSpectrum(TH1 *hStat, TH1 *hSys,
-                          double mass, double normalization,
-                          const char *name)
+    Spectrum MakeSpectrum(TH1 *hStat, TH1 *hSys, double mass, double normalization, const char *name)
     {
         Spectrum result;
 
@@ -1091,8 +1074,8 @@ namespace CrossSectionPlot
             if (pt <= 0.0 || yield <= 0.0)
                 continue;
 
-            const double crossSection = yield * normalization;
-            const double statError = hStat->GetBinError(bin) * normalization;
+            const double crossSection = yield * normalization * (1.0 / (2.0 * TMath::Pi() * pt));
+            const double statError = hStat->GetBinError(bin) * normalization * (1.0 / (2.0 * TMath::Pi() * pt));
 
             // hSys contains relative systematic uncertainties.
             const double sysError = hSys->GetBinContent(bin) * crossSection;
@@ -1114,13 +1097,7 @@ namespace CrossSectionPlot
 
         const bool isPhi = TString(name) == "Phi";
 
-        result.fit = MakeLevyTsallis(
-            hStat, hSys,
-            normalization,
-            Form("levy%s", name),
-            mass,
-            kBlack,
-            isPhi);
+        result.fit = MakeLevyTsallis(hStat, hSys, normalization, Form("levy%s", name), mass, kBlack, isPhi);
 
         result.ratioStat = new TGraphErrors();
         result.ratioSys = new TGraphAsymmErrors();
@@ -1424,9 +1401,7 @@ namespace CrossSectionPlot
         // Phi: Run 3
         // ------------------------------------------------------------
 
-        TFile *fPhi = TFile::Open(
-            Form("%soutputs/CBT_hadronPID/inel/PAR.root", root),
-            "READ");
+        TFile *fPhi = TFile::Open(Form("%soutputs/CBT_hadronPID/inel/PAR.root", root), "READ");
 
         if (!fPhi || fPhi->IsZombie())
         {
@@ -1471,11 +1446,7 @@ namespace CrossSectionPlot
 
         constexpr double kstarFactor = 1.0; // K*0 + K*0bar
 
-        auto kstar = MakeSpectrum(
-            hKstat, hKsys,
-            0.89555,
-            sigmaINEL * kstarFactor,
-            "Kstar");
+        auto kstar = MakeSpectrum(hKstat, hKsys, 0.89555, sigmaINEL * kstarFactor, "Kstar");
 
         // For Phi, the systematic histogram stores absolute
         // uncertainties, so convert it to relative uncertainties first.
@@ -1489,11 +1460,7 @@ namespace CrossSectionPlot
             hPhiRelSys->SetBinContent(bin, y > 0.0 ? error / y : 0.0);
         }
 
-        auto phi = MakeSpectrum(
-            hPhiStat, hPhiRelSys,
-            1.01946,
-            sigmaINEL,
-            "Phi");
+        auto phi = MakeSpectrum(hPhiStat, hPhiRelSys, 1.01946, sigmaINEL, "Phi");
 
         if (!kstar.stat || !phi.stat ||
             !kstar.fit || !phi.fit)
