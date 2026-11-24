@@ -1074,8 +1074,8 @@ namespace CrossSectionPlot
             if (pt <= 0.0 || yield <= 0.0)
                 continue;
 
-            const double crossSection = yield * normalization * (1.0 / (2.0 * TMath::Pi() * pt));
-            const double statError = hStat->GetBinError(bin) * normalization * (1.0 / (2.0 * TMath::Pi() * pt));
+            const double crossSection = yield * normalization;
+            const double statError = hStat->GetBinError(bin) * normalization;
 
             // hSys contains relative systematic uncertainties.
             const double sysError = hSys->GetBinContent(bin) * crossSection;
@@ -1536,7 +1536,7 @@ namespace CrossSectionPlot
         label.SetTextSize(0.038);
         label.DrawLatex(0.25, 0.19, "Global norm. unc. 2.6% (not shown)");
 
-        c->SaveAs("../figures/KstarPhi_CrossSection_13p6TeV.pdf");
+        c->SaveAs("../figures/KstarPhi_DifferentialCrossSection_13p6TeV.pdf");
 
         DrawInvariant(kstar, phi);
     }
