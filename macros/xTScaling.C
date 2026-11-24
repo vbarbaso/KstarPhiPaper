@@ -1182,6 +1182,220 @@ namespace CrossSectionPlot
         s.fit->SetLineWidth(2);
     }
 
+    void DrawInvariant(const Spectrum &kstar, const Spectrum &phi)
+    {
+        // Convert differential cross-section graphs to invariant cross sections.
+        auto ConvertStat = [](TGraphErrors *input, const char *name)
+        {
+            auto *output = new TGraphErrors();
+            output->SetName(name);
+
+            for (int i = 0; i < input->GetN(); ++i)
+            {
+                double pt, value;
+                input->GetPoint(i, pt, value);
+
+                if (pt <= 0.0)
+                    continue;
+
+                const double factor = 1.0 / (2.0 * TMath::Pi() * pt);
+
+                const int p = output->GetN();
+                output->SetPoint(p, pt, value * factor);
+                output->SetPointError(
+                    p,
+                    input->GetErrorX(i),
+                    input->GetErrorY(i) * factor);
+            }
+
+            return output;
+        };
+
+        auto ConvertSys = [](TGraphAsymmErrors *input, const char *name)
+        {
+            auto *output = new TGraphAsymmErrors();
+            output->SetName(name);
+
+            for (int i = 0; i < input->GetN(); ++i)
+            {
+                double pt, value;
+                input->GetPoint(i, pt, value);
+
+                if (pt <= 0.0)
+                    continue;
+
+                const double factor = 1.0 / (2.0 * TMath::Pi() * pt);
+
+                const int p = output->GetN();
+                output->SetPoint(p, pt, value * factor);
+
+                output->SetPointError(
+                    p,
+                    input->GetErrorXlow(i),
+                    input->GetErrorXhigh(i),
+                    input->GetErrorYlow(i) * factor,
+                    input->GetErrorYhigh(i) * factor);
+            }
+
+            return output;
+        };
+
+        // Transform the fitted differential curves as well.
+        // Use sampled TGraphs to preserve the original fit functions.
+        auto ConvertFit = [](TF1 *input, const char *name,
+                             double ptMin, double ptMax, int color)
+        {
+            auto *output = new TGraph();
+            output->SetName(name);
+
+            constexpr int nPoints = 1000;
+
+            for (int i = 0; i < nPoints; ++i)
+            {
+                const double pt = ptMin +
+                                  (ptMax - ptMin) * i / (nPoints - 1.0);
+
+                if (pt <= 0.0)
+                    continue;
+
+                const double value =
+                    input->Eval(pt) / (2.0 * TMath::Pi() * pt);
+
+                if (value <= 0.0)
+                    continue;
+
+                output->SetPoint(output->GetN(), pt, value);
+            }
+
+            output->SetLineColor(color);
+            output->SetLineWidth(2);
+            output->SetLineStyle(7);
+
+            return output;
+        };
+
+        // ------------------------------------------------------------
+        // Convert data
+        // ------------------------------------------------------------
+
+        auto *kstarStat = ConvertStat(
+            kstar.stat, "gKstarInvariantStat");
+
+        auto *kstarSys = ConvertSys(
+            kstar.sys, "gKstarInvariantSys");
+
+        auto *phiStat = ConvertStat(
+            phi.stat, "gPhiInvariantStat");
+
+        auto *phiSys = ConvertSys(
+            phi.sys, "gPhiInvariantSys");
+
+        // ------------------------------------------------------------
+        // Convert Levy-Tsallis fits
+        // ------------------------------------------------------------
+
+        auto *kstarFit = ConvertFit(
+            kstar.fit, "gKstarInvariantFit",
+            0.05, 30.0, kOrange + 7);
+
+        auto *phiFit = ConvertFit(
+            phi.fit, "gPhiInvariantFit",
+            0.05, 20.0, kCyan + 2);
+
+        // ------------------------------------------------------------
+        // Styles
+        // ------------------------------------------------------------
+
+        SetGraphStyle(kstarStat, kOrange + 7, 1.0, 20, 0.8, 1);
+        SetGraphStyle(phiStat, kCyan + 2, 1.0, 20, 0.8, 1);
+
+        kstarSys->SetLineColor(kOrange + 7);
+        kstarSys->SetFillColorAlpha(kOrange + 7, 0.20);
+        kstarSys->SetFillStyle(0);
+
+        phiSys->SetLineColor(kCyan + 2);
+        phiSys->SetFillColorAlpha(kCyan + 2, 0.20);
+        phiSys->SetFillStyle(0);
+
+        // ------------------------------------------------------------
+        // Canvas
+        // ------------------------------------------------------------
+
+        auto *c = new TCanvas(
+            "cKstarPhiInvariantCrossSection",
+            "Kstar and Phi invariant cross sections",
+            700, 700);
+
+        SetPad(c);
+
+        c->SetBottomMargin(0.15);
+        c->SetLeftMargin(0.21);
+        c->SetRightMargin(0.03);
+        c->SetLogy();
+
+        auto *frame = c->DrawFrame(
+            0.0, 1.e-8, 30.0, 15.0);
+
+        SetHistStyle(frame);
+
+        frame->GetXaxis()->SetTitle(
+            "#it{p}_{T} (GeV/#it{c})");
+
+        frame->GetYaxis()->SetTitle(
+            "#it{E} #frac{d^{3}#sigma}{d^{3}#it{p}} "
+            "(mb GeV^{ -2}#it{c}^{ 3})");
+
+        frame->GetYaxis()->SetTitleOffset(1.7);
+
+        // Systematic uncertainties
+        kstarSys->Draw("2 SAME");
+        phiSys->Draw("2 SAME");
+
+        // Levy-Tsallis curves
+        kstarFit->Draw("L SAME");
+        phiFit->Draw("L SAME");
+
+        // Statistical uncertainties and points
+        kstarStat->Draw("P E SAME");
+        phiStat->Draw("P E SAME");
+
+        TF1 *fitLegend = new TF1("fitLegend", "1.0", 0.0, 1.0);
+        fitLegend->SetLineColor(kBlack);
+        fitLegend->SetLineWidth(2);
+        fitLegend->SetLineStyle(7);
+
+        // ------------------------------------------------------------
+        // Legend
+        // ------------------------------------------------------------
+
+        auto *legend = new TLegend(0.55, 0.55, 0.85, 0.75);
+        SetLegend(legend);
+        legend->SetTextSize(0.045);
+        legend->AddEntry(kstarStat, "K*^{0} + #bar{K*}^{0}", "p");
+        legend->AddEntry(phiStat, "#phi", "p");
+        legend->AddEntry(fitLegend, "Levy-Tsallis fit", "l");
+        legend->Draw();
+
+        // ------------------------------------------------------------
+        // ALICE labels
+        // ------------------------------------------------------------
+
+        TLatex label;
+        label.SetNDC();
+        label.SetTextFont(42);
+
+        label.SetTextSize(0.055);
+        label.DrawLatex(0.45, 0.87, "#bf{ALICE}");
+
+        label.SetTextSize(0.045);
+        label.DrawLatex(0.45, 0.81,"pp, #sqrt{s} = 13.6 TeV, |y| < 0.5");
+
+        label.SetTextSize(0.038);
+        label.DrawLatex(0.25, 0.19,"Global norm. unc. 2.6% (not shown)");
+
+        c->SaveAs("../figures/KstarPhi_InvariantCrossSection_13p6TeV.pdf");
+    }
+
     void Draw()
     {
         const char *root = "/Users/veronikabarbasova/git/Phi-analysis/";
@@ -1311,7 +1525,8 @@ namespace CrossSectionPlot
 
         SetHistStyle(frame);
         frame->GetXaxis()->SetTitle("#it{p}_{T} (GeV/#it{c})");
-        frame->GetYaxis()->SetTitle("#it{E} #frac{d^{3}#sigma}{d^{3}#it{p}} (mb GeV^{ -2}#it{c}^{ 3})");
+        frame->GetYaxis()->SetTitle("d^{2}#sigma/(d#it{p}_{T} d#it{y}) (mb /GeV/#it{c})");
+        // frame->GetYaxis()->SetTitle("#it{E} #frac{d^{3}#sigma}{d^{3}#it{p}} (mb GeV^{ -2}#it{c}^{ 3})");
         frame->GetYaxis()->SetTitleOffset(1.7);
 
         frame->GetXaxis()->SetRangeUser(0.0, 30.0);
@@ -1355,7 +1570,10 @@ namespace CrossSectionPlot
         label.DrawLatex(0.25, 0.19, "Global norm. unc. 2.6% (not shown)");
 
         c->SaveAs("../figures/KstarPhi_CrossSection_13p6TeV.pdf");
+
+        DrawInvariant(kstar, phi);
     }
+
 }
 
 void xTScaling()
