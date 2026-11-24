@@ -464,7 +464,6 @@ void DrawCombined(const Species &ks, const Species &phi,
                          bool leftPanel,
                          bool uncorrRelative)
     {
-        // const double xmax = s.stat[0]->GetXaxis()->GetXmax();
         const double xmin = isPhi ? 0.0 : 0.0;
         const double xmax = isPhi ? s.stat[0]->GetXaxis()->GetXmax() : 21.3;
 
@@ -474,7 +473,6 @@ void DrawCombined(const Species &ks, const Species &phi,
 
         top->cd();
 
-        // TH1D *frame = new TH1D(Form("frame_combined_%s", isPhi ? "phi" : "kstar"), "", 100, 0.0, xmax);
         TH1D *frame = new TH1D(Form("frame_combined_%s", isPhi ? "phi" : "kstar"), "", 100, xmin, xmax);
 
         frame->Reset();
@@ -491,8 +489,7 @@ void DrawCombined(const Species &ks, const Species &phi,
 
         if (leftPanel)
         {
-            frame->GetYaxis()->SetTitle(
-                "1/#it{N}_{ev} d^{2}#it{N}/d#it{p}_{T}d#it{y} [(GeV/#it{c})^{-1}]");
+            frame->GetYaxis()->SetTitle("1/#it{N}_{ev} d^{2}#it{N}/d#it{p}_{T}d#it{y} [(GeV/#it{c})^{-1}]");
         }
         else
         {
@@ -503,15 +500,24 @@ void DrawCombined(const Species &ks, const Species &phi,
 
         frame->Draw();
 
-        TLegend *leg = nullptr;
+        TLegend *legLeft = nullptr;
+        TLegend *legRight = nullptr;
 
         if (leftPanel)
         {
-            leg = new TLegend(.19, .03, .96, .2);
-            SetLegend(leg);
-            leg->SetTextSize(.025);
-            leg->SetNColumns(4);
-            leg->SetHeader("#bf{FT0M multiplicity event classes}");
+            legLeft = new TLegend(.19, .03, .96, .2);
+            SetLegend(legLeft);
+            legLeft->SetTextSize(.035);
+            legLeft->SetNColumns(3);
+            legLeft->SetHeader("#bf{FT0M multiplicity event classes}");
+        }
+        else
+        {
+            legRight = new TLegend(0.04, .03, .96, .2);
+            SetLegend(legRight);
+            legRight->SetTextSize(.035);
+            legRight->SetNColumns(3);
+            legRight->SetHeader("Uncertainties: stat. (bars), sys. (boxes)");
         }
 
         std::vector<TGraphAsymmErrors *> statGraphs;
@@ -627,44 +633,37 @@ void DrawCombined(const Species &ks, const Species &phi,
         // Legend: only in the left panel (K*0)
         // --------------------------------------------------------
 
-        if (leftPanel)
+        Printf("Drawing legend for %s panel\n", leftPanel ? "left" : "right");
+
+        for (int i = 0; i < 10; ++i)
         {
-            for (int i = 0; i < 10; ++i)
+            int p = 9 - i;
+
+            TString label = Form("%s%s", kMult[i], i < 9 ? Form(" (#times 2^{%d})", p) : "");
+
+            if (leftPanel && i < 6)
             {
-                int p = 9 - i;
-
-                TString label = Form("%s%s",
-                                     kMult[i],
-                                     i < 9 ? Form(" (#times 2^{%d})", p) : "");
-
-                leg->AddEntry(
-                    sysGraphs[i], label,
-                    systematics ? "Pfe" : "P");
+                legLeft->AddEntry(sysGraphs[i], label, systematics ? "Pfe" : "P");
             }
-
-            leg->AddEntry(
-                gSys, "INEL>0 (#times 10^{-2})",
-                systematics ? "Pfe" : "P");
-
-            if (fits[0])
+            else if (!leftPanel && i >= 6)
             {
-                fits[0]->SetLineColor(kBlack);
-
-                if (systematics)
-                    leg->AddEntry(fits[0], "Levy-Tsallis fit", "l");
+                legRight->AddEntry(sysGraphs[i], label, systematics ? "Pfe" : "P");
             }
-
-            leg->Draw();
-
-            // TPaveText *pt = new TPaveText(.17, .19, .65, .23, "NDC");
-            // pt->SetFillStyle(0);
-            // pt->SetBorderSize(0);
-            // pt->SetTextAlign(11);
-            // pt->SetTextSize(.025);
-            // pt->SetTextFont(42);
-            // pt->AddText("Uncertainties: stat. (bars), sys. (boxes)");
-            // pt->Draw();
         }
+
+        if (!leftPanel)
+        {
+            legRight->AddEntry(gSys, "INEL>0 (#times 10^{-2})", systematics ? "Pfe" : "P");
+
+            if (systematics && fitMB)
+                legRight->AddEntry(fitMB, "Levy-Tsallis fit", "l");
+        }
+
+        if (leftPanel && legLeft)
+            legLeft->Draw();
+
+        if (!leftPanel && legRight)
+            legRight->Draw();
 
         // --------------------------------------------------------
         // ALICE information: only in the right panel (Phi)
@@ -675,23 +674,24 @@ void DrawCombined(const Species &ks, const Species &phi,
             TLatex latex;
             latex.SetNDC();
             latex.SetTextFont(42);
+            latex.SetTextSize(0.065);
+            latex.DrawLatex(0.75, 0.87, "#bf{ALICE}");
+            latex.SetTextSize(0.045);
+            latex.DrawLatex(0.445, 0.805, "pp, #sqrt{#it{s}} = 13.6 TeV, |#it{y}| < 0.5");
+            // latex.DrawLatex(0.78, 0.79, "|y| < 0.5");
             latex.SetTextSize(0.05);
-            latex.DrawLatex(0.78, 0.89, "#bf{ALICE}");
-            latex.SetTextSize(0.04);
-            latex.DrawLatex(0.635, 0.84, "pp, #sqrt{#it{s}} = 13.6 TeV");
-            latex.DrawLatex(0.78, 0.79, "|y| < 0.5");
-            latex.DrawLatex(0.79, 0.74, s.label);
+            latex.DrawLatex(0.78, 0.74, s.label);
 
             latex.SetTextSize(0.03);
-            latex.DrawLatex(0.05, 0.03, "Uncertainties: stat. (bars), sys. (boxes)");
+            // latex.DrawLatex(0.05, 0.03, "Uncertainties: stat. (bars), sys. (boxes)");
         }
         else
         {
             TLatex KstarLabel;
             KstarLabel.SetNDC();
             KstarLabel.SetTextFont(42);
-            KstarLabel.SetTextSize(0.04);
-            KstarLabel.DrawLatex(0.85, 0.89, s.label);
+            KstarLabel.SetTextSize(0.05);
+            KstarLabel.DrawLatex(0.82, 0.88, s.label);
         }
 
         // --------------------------------------------------------
@@ -700,7 +700,6 @@ void DrawCombined(const Species &ks, const Species &phi,
 
         bot->cd();
 
-        // TH1D *ratioFrame = new TH1D(Form("ratio_frame_combined_%s", isPhi ? "phi" : "kstar"), "", 100, 0.0, xmax);
         TH1D *ratioFrame = new TH1D(Form("ratio_frame_combined_%s", isPhi ? "phi" : "kstar"), "", 100, xmin, xmax);
 
         ratioFrame->Reset();
@@ -709,8 +708,12 @@ void DrawCombined(const Species &ks, const Species &phi,
 
         ratioFrame->GetXaxis()->SetTitle("#it{p}_{T} (GeV/#it{c})");
         ratioFrame->GetXaxis()->SetRangeUser(0., xmax);
+        ratioFrame->GetXaxis()->SetTitleSize(0.14);
+        ratioFrame->GetXaxis()->SetTitleOffset(1.);
+
         ratioFrame->GetYaxis()->SetRangeUser(.08, 14.);
         ratioFrame->GetYaxis()->SetNdivisions(505);
+
 
         if (!leftPanel)
         {
