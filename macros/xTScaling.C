@@ -1401,7 +1401,8 @@ namespace CrossSectionPlot
         // Phi: Run 3
         // ------------------------------------------------------------
 
-        TFile *fPhi = TFile::Open(Form("%soutputs/CBT_hadronPID/inel/PAR.root", root), "READ");
+        // TFile *fPhi = TFile::Open(Form("%soutputs/CBT_hadronPID/inel/PAR.root", root), "READ");
+        TFile *fPhi = TFile::Open(("../inputs/Phi_136/inel/PAR.root"), "READ");
 
         if (!fPhi || fPhi->IsZombie())
         {
