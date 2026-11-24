@@ -921,10 +921,10 @@ namespace PhiXT
             labelXT.SetNDC();
             labelXT.SetTextFont(42);
 
-            labelXT.SetTextSize(0.055);
-            labelXT.DrawLatex(0.62, 0.80, "#bf{ALICE}");
-            labelXT.SetTextSize(0.045);
-            labelXT.DrawLatex(0.56, 0.74, "pp, |y| < 0.5");
+            // labelXT.SetTextSize(0.055);
+            // labelXT.DrawLatex(0.62, 0.80, "#bf{ALICE}");
+            // labelXT.SetTextSize(0.045);
+            // labelXT.DrawLatex(0.56, 0.74, "pp, |y| < 0.5");
 
             labelXT.SetTextSize(0.065);
             labelXT.DrawLatex(0.74, 0.88, "#phi");

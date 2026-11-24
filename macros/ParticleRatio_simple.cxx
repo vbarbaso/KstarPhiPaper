@@ -1561,7 +1561,7 @@ void ParticleRatio_simple()
 
     gRatioPhiK0s_Thermal->SetLineColor(kMagenta + 2);
     gRatioPhiK0s_Thermal->SetLineStyle(5);
-    gRatioPhiK0s_Thermal->SetLineWidth(2);
+    // gRatioPhiK0s_Thermal->SetLineWidth(2);
     gRatioPhiK0s_Thermal->Draw("LX same");
 
     for (auto model : modelsToPlot)
@@ -2396,7 +2396,7 @@ void ParticleRatio_simple()
 
         thermalCopy->SetLineColor(kMagenta + 2);
         thermalCopy->SetLineStyle(5);
-        thermalCopy->SetLineWidth(2);
+        // thermalCopy->SetLineWidth(2);
         thermalCopy->Draw("LX SAME");
 
         // Pythia models
@@ -2470,13 +2470,19 @@ void ParticleRatio_simple()
     cRatioPhiThreePanel->cd();
 
     // Three equal-width pads with comfortable left margins so every y-axis label is visible
-    TPad *padPhiPi = new TPad("padPhiPi", "Phi/Pi", 0.00, 0.0, 0.335, 1.0);
-    TPad *padPhiK0s = new TPad("padPhiK0s", "Phi/K0s", 0.335, 0.0, 0.668, 1.0);
-    TPad *padPhiXi = new TPad("padPhiXi", "Phi/Xi", 0.663, 0.0, 1.00, 1.0);
+    TPad *padPhiPi = new TPad("padPhiPi", "Phi/Pi", 0.00, 0.0, 0.334, 1.0);
+    TPad *padPhiK0s = new TPad("padPhiK0s", "Phi/K0s", 0.334, 0.0, 0.667, 1.0);
+    TPad *padPhiXi = new TPad("padPhiXi", "Phi/Xi", 0.667, 0.0, 1.00, 1.0);
 
     for (TPad *p : {padPhiPi, padPhiK0s, padPhiXi})
     {
-        p->SetLeftMargin(0.16);
+        if (p == padPhiPi)
+            p->SetLeftMargin(0.14);
+        else if (p == padPhiK0s)
+            p->SetLeftMargin(0.18);
+        else if (p == padPhiXi)
+            p->SetLeftMargin(0.13);
+
         p->SetRightMargin(0.03);
         p->SetTopMargin(0.07);
         p->SetBottomMargin(0.15);
@@ -2547,7 +2553,7 @@ void ParticleRatio_simple()
 
         thermalCopy->SetLineColor(kMagenta + 2);
         thermalCopy->SetLineStyle(5);
-        thermalCopy->SetLineWidth(2);
+        // thermalCopy->SetLineWidth(2);
         thermalCopy->Draw("LX SAME");
 
         std::vector<TGraphErrors *> pythiaGraphs;
@@ -2564,14 +2570,14 @@ void ParticleRatio_simple()
         txt.SetNDC();
         txt.SetTextFont(42);
         txt.SetTextSize(0.048);
-        txt.DrawLatex(0.2, 0.85, panelLabel);
+        txt.DrawLatex(0.22, 0.85, panelLabel);
         txt.SetTextSize(0.055);
         txt.DrawLatex(0.27, 0.85, ratioLabel);
 
         if (showInfo)
         {
             txt.SetTextSize(0.065);
-            txt.DrawLatex(0.74, 0.84, "#bf{ALICE}");
+            txt.DrawLatex(0.72, 0.84, "#bf{ALICE}");
         }
 
         if (showInfo2)
@@ -2606,14 +2612,14 @@ void ParticleRatio_simple()
                          gRatioPhiPion,
                          gPhiPiRatio_EPOSNew_UrQMDOff, gPhiPiRatio_EPOSNew_UrQMDOn, gRatioPhiPi_Thermal,
                          kPhi, kPion, 2.0,
-                         0.007, 0.028, "#phi / #pi", "(a)", "#phi / #pi", true, false, false, 1.25);
+                         0.007, 0.028, "#phi / #pi", "(a)", "", true, false, false, 1.25);
 
     // Panel (b): Phi / K0s
     drawSpacedRatioPanel(padPhiK0s, "hFrame3Panel_PhiK0s",
                          gRatioPhiK0s,
                          gPhiK0sRatio_EPOSNew_UrQMDOff, gPhiK0sRatio_EPOSNew_UrQMDOn, gRatioPhiK0s_Thermal,
                          kPhi, kKshort, 1.0,
-                         0.07, 0.16, "#phi / K_{S}^{0}", "(b)", "#phi / K_{S}^{0}", false, true, false, 1.60);
+                         0.07, 0.16, "#phi / K_{S}^{0}", "(b)", "", false, true, false, 1.60);
 
     // Panel (c): Phi / Xi
     // Note: gPhiXiRatio_EPOSNew_UrQMDOff/On were already scaled by 0.5 earlier in the macro.
@@ -2623,7 +2629,91 @@ void ParticleRatio_simple()
                          gRatioPhiXi,
                          gPhiXiRatio_EPOSNew_UrQMDOff, gPhiXiRatio_EPOSNew_UrQMDOn, gRatioPhiXi_Thermal,
                          kPhi, kXi, 1.0,
-                         1.1, 4.3, "#phi / #Xi", "(c)", "#phi / #Xi", false, false, true, 0.95);
+                         1.1, 4.3, "#phi / #Xi", "(c)", "", false, false, true, 0.95);
+
+    // if (isSavePlots)
+    {
+        cRatioKstarPhiK0s->SaveAs((plotOutputDirectory + "/Ratio_KstarPhi_KstarK0s_TwoPanel_Run3.pdf").c_str());
+        cRatioPhiThreePanel->SaveAs((plotOutputDirectory + "/Ratio_PhiPi_PhiK0s_PhiXi_ThreePanel_Run3.pdf").c_str());
+    }
+
+    //======================================================
+    // 3. ADDITIONAL TWO-PANEL RATIO PLOT: K*0 / Phi and K*0 / K
+    //    The original K*0 / K0s canvas above is kept unchanged.
+    //======================================================
+    TCanvas *cRatioKstarPhiKaon = new TCanvas("cRatioKstarPhiKaon", "Ratios: K*0/Phi and K*0/K", 850, 450);
+    SetPad(cRatioKstarPhiKaon);
+    cRatioKstarPhiKaon->cd();
+
+    TPad *padRatioKstarPhiKaon = makeHorizontalPad("padRatioKstarPhiKaon", "K*0/Phi", 0.0, 0.5, true);
+    TPad *padRatioKstarKaon = makeHorizontalPad("padRatioKstarKaon", "K*0/K", 0.5, 1.0, false);
+
+    drawTwoPanelRatio(padRatioKstarPhiKaon, "hFrame2Panel_KstarPhi_ChargedKaon",
+                      gRatioKstarPhi,
+                      gKstarPhiRatio_EPOSNew_UrQMDOff, gKstarPhiRatio_EPOSNew_UrQMDOn, gRatioKstarPhi_Thermal,
+                      kKstar, kPhi, 1.0,
+                      2.1, 5.15, false, "", "K*^{0} / #phi", true, false);
+
+    drawTwoPanelRatio(padRatioKstarKaon, "hFrame2Panel_KstarKaon",
+                      gRatioKstarKaon,
+                      gKstarKaRatio_UrQMDOffSmooth, gKstarKaRatio_UrQMDOnSmooth, gRatioKstarKa_Thermal,
+                      kKstar, kKaon, 2.0,
+                      0.252, 0.48, true, "", "K*^{0} / K", false, true);
+
+    //======================================================
+    // 4. ADDITIONAL THREE-PANEL RATIO PLOT:
+    //    Phi / Pi, Phi / K, Phi / Xi
+    //    The original Phi / K0s canvas above is kept unchanged.
+    //======================================================
+    TCanvas *cRatioPhiKaonThreePanel = new TCanvas("cRatioPhiKaonThreePanel", "Ratios: Phi/Pi, Phi/K, Phi/Xi", 1350, 460);
+    SetPad(cRatioPhiKaonThreePanel);
+    cRatioPhiKaonThreePanel->cd();
+
+    TPad *padPhiPiKaon = new TPad("padPhiPiKaon", "Phi/Pi", 0.00, 0.0, 0.334, 1.0);
+    TPad *padPhiKaon = new TPad("padPhiKaon", "Phi/K", 0.334, 0.0, 0.667, 1.0);
+    TPad *padPhiXiKaon = new TPad("padPhiXiKaon", "Phi/Xi", 0.667, 0.0, 1.00, 1.0);
+
+    for (TPad *p : {padPhiPiKaon, padPhiKaon, padPhiXiKaon})
+    {
+        if (p == padPhiPiKaon)
+            p->SetLeftMargin(0.14);
+        else if (p == padPhiKaon)
+            p->SetLeftMargin(0.18);
+        else if (p == padPhiXiKaon)
+            p->SetLeftMargin(0.13);
+
+        p->SetRightMargin(0.03);
+        p->SetTopMargin(0.07);
+        p->SetBottomMargin(0.15);
+        p->SetTickx(1);
+        p->SetTicky(1);
+        p->Draw();
+    }
+
+    drawSpacedRatioPanel(padPhiPiKaon, "hFrame3Panel_PhiPi_ChargedKaon",
+                         gRatioPhiPion,
+                         gPhiPiRatio_EPOSNew_UrQMDOff, gPhiPiRatio_EPOSNew_UrQMDOn, gRatioPhiPi_Thermal,
+                         kPhi, kPion, 2.0,
+                         0.007, 0.028, "#phi / #pi", "(a)", "", true, false, false, 1.25);
+
+    drawSpacedRatioPanel(padPhiKaon, "hFrame3Panel_PhiKaon",
+                         gRatioPhiK,
+                         gPhiKaRatio_UrQMDOffSmooth, gPhiKaRatio_UrQMDOnSmooth, gRatioPhiKa_Thermal,
+                         kPhi, kKaon, 2.0,
+                         0.07, 0.16, "#phi / K", "(b)", "", false, true, false, 1.60);
+
+    drawSpacedRatioPanel(padPhiXiKaon, "hFrame3Panel_PhiXi_ChargedKaon",
+                         gRatioPhiXi,
+                         gPhiXiRatio_EPOSNew_UrQMDOff, gPhiXiRatio_EPOSNew_UrQMDOn, gRatioPhiXi_Thermal,
+                         kPhi, kXi, 1.0,
+                         1.1, 4.3, "#phi / #Xi", "(c)", "", false, false, true, 0.95);
+
+    // Save both original and additional canvases.
+    // if (isSavePlots)
+    {
+        cRatioKstarPhiKaon->SaveAs((plotOutputDirectory + "/Ratio_KstarPhi_KstarK_TwoPanel_Run3.pdf").c_str());
+        cRatioPhiKaonThreePanel->SaveAs((plotOutputDirectory + "/Ratio_PhiPi_PhiK_PhiXi_ThreePanel_Run3.pdf").c_str());
+    }
 
     // if (isSavePlots)
     {
