@@ -1401,7 +1401,7 @@ namespace CrossSectionPlot
         label.DrawLatex(0.3, 0.89, "#bf{ALICE}");
 
         label.SetTextSize(0.045);
-        label.DrawLatex(0.45, 0.81,"pp, #sqrt{s} = 13.6 TeV, |y| < 0.5");
+        label.DrawLatex(0.45, 0.81, "pp, #sqrt{s} = 13.6 TeV, |y| < 0.5");
 
         label.SetTextSize(0.038);
         label.DrawLatex(0.25, 0.19, "Global norm. unc. 2.6% (not shown)");
