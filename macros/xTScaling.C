@@ -32,28 +32,62 @@
 #include <TGraphAsymmErrors.h>
 
 #include "../include/StyleProposal.h"
+#include "../include/PaperColors.h"
 #include "../include/Functions.h"
 #include "../include/YieldMean.C"
 
 namespace XTStyle
 {
-    // Same energy-to-colour and marker mapping for K*0 and phi
-    constexpr int energyColors[] = {
-        kMagenta - 3, kBlue, kCyan + 1, kYellow + 1, kAzure + 1, kBlack};
+    // ============================================================
+    // xT scaling: collision energies
+    // Viridis palette: increasing energy
+    // ============================================================
 
-    constexpr int energyMarkers[] = {20, 20, 20, 20, 20, 20};
+    const int energyColors[] = {
+        PaperColors::GetROOTColor(PaperColors::kXT2760),
+        PaperColors::GetROOTColor(PaperColors::kXT5020),
+        PaperColors::GetROOTColor(PaperColors::kXT7000),
+        PaperColors::GetROOTColor(PaperColors::kXT8000),
+        PaperColors::GetROOTColor(PaperColors::kXT13000),
+        PaperColors::GetROOTColor(PaperColors::kXT13600)};
 
-    constexpr const char *energyLabels[] = {"2.76 TeV", "5.02 TeV", "7 TeV", "8 TeV", "13 TeV", "13.6 TeV"};
+    constexpr int energyMarkers[] = {
+        20, 20, 20, 20, 20, 20};
 
-    // Same exponent-ratio styles for both mesons
-    constexpr int exponentColors[] = {
-        kCyan + 1, kBlue, kMagenta - 3, kGreen + 2};
+    constexpr const char *energyLabels[] = {
+        "2.76 TeV",
+        "5.02 TeV",
+        "7 TeV",
+        "8 TeV",
+        "13 TeV",
+        "13.6 TeV"};
+
+    // ============================================================
+    // xT exponent: energy ratios
+    // Warm orange-red palette
+    // ============================================================
+
+    const int exponentColors[] = {
+        PaperColors::GetROOTColor(PaperColors::kXTRatio1),
+        PaperColors::GetROOTColor(PaperColors::kXTRatio2),
+        PaperColors::GetROOTColor(PaperColors::kXTRatio3),
+        PaperColors::GetROOTColor(PaperColors::kXTRatio4)};
 
     constexpr int exponentMarkers[] = {20, 20, 20, 20};
 
+    // ============================================================
+    // Graph styling
+    // ============================================================
+
     void SetEnergyGraph(TGraph *graph, int index)
     {
-        SetGraphStyle(graph, energyColors[index], 1.0, energyMarkers[index], 0.8, 1);
+        SetGraphStyle(
+            graph,
+            energyColors[index],
+            1.0,
+            energyMarkers[index],
+            0.8,
+            1);
     }
 
     void SetExponentGraph(TGraph *graph, int index)
@@ -399,8 +433,8 @@ namespace KstarXT
             }
 
             SetFunctionStyle(fitN, kBlack, 1.0, 1, 1);
-            SetFunctionStyle(fitN1, kBlue + 2, 1.0, 1, 2);
-            SetFunctionStyle(fitN2, kRed + 2, 1.0, 1, 2);
+            SetFunctionStyle(fitN1, kRed + 2, 1.0, 1, 2);
+            SetFunctionStyle(fitN2, kBlue + 2, 1.0, 1, 2);
 
             fitN->Draw("SAME");
             fitN1->Draw("SAME");
@@ -489,7 +523,7 @@ namespace KstarXT
             fitXT->SetParLimits(1, -10, 10);
             fitXT->SetParLimits(2, -1000, 1000);
 
-            SetFunctionStyle(fitXT, kRed, 1.0, 2, 1);
+            SetFunctionStyle(fitXT, kBlack, 1.0, 2, 1);
             allXT->Fit(fitXT, "REBMS0");
             fitXT->Draw("SAME");
 
@@ -772,8 +806,11 @@ namespace PhiXT
 
         auto *allN = CombineExponentGraphs({n136_5, n136_7, n136_8, n8_5, n136_276, n7_276});
 
-        auto *fit1 = FitExponent(allN, "phi_n_range1", 1.9, 4.0, kRed + 1, 2);
-        auto *fit2 = FitExponent(allN, "phi_n_range2", 2.5, 4.5, kBlue + 1, 2);
+        auto *fit1 = FitExponent(allN, "phi_n_range1",
+                                 1.9, 4.0, kGray + 2, 2);
+
+        auto *fit2 = FitExponent(allN, "phi_n_range2",
+                                 2.5, 4.5, kGray + 1, 2);
 
         if (!fit1 || !fit2)
             return;
@@ -819,8 +856,8 @@ namespace PhiXT
             fitCentral->SetParameter(0, nCentral);
 
             SetFunctionStyle(fitCentral, kBlack, 1.0, 1, 1);
-            SetFunctionStyle(fit1, kRed + 1, 1.0, 1, 2);
-            SetFunctionStyle(fit2, kBlue + 1, 1.0, 1, 2);
+            SetFunctionStyle(fit1, kRed + 2, 1.0, 1, 2);
+            SetFunctionStyle(fit2, kBlue + 2, 1.0, 1, 2);
 
             fit1->Draw("SAME");
             fit2->Draw("SAME");
@@ -894,7 +931,7 @@ namespace PhiXT
             fitPower->SetParLimits(0, 0.0, 1.e25);
             fitPower->SetParLimits(1, 0.0, 20.0);
 
-            SetFunctionStyle(fitPower, kRed, 1.0, 2, 1);
+            SetFunctionStyle(fitPower, kBlack, 1.0, 2, 1);
 
             TFitResultPtr fitResult = mg->Fit(fitPower, "RQS");
 
@@ -1138,7 +1175,7 @@ namespace CrossSectionPlot
         s.stat->SetMarkerStyle(marker);
         s.stat->SetMarkerColor(color);
         s.stat->SetLineColor(color);
-        s.stat->SetMarkerSize(1.0);
+        s.stat->SetMarkerSize(1.);
         s.stat->SetFillStyle(0);
 
         s.sys->SetMarkerColor(color);
@@ -1271,27 +1308,26 @@ namespace CrossSectionPlot
         // Convert Levy-Tsallis fits
         // ------------------------------------------------------------
 
+        const int colorKstar = PaperColors::GetROOTColor(PaperColors::kKstar);
+        const int colorPhi = PaperColors::GetROOTColor(PaperColors::kPhi);
+
         auto *kstarFit = ConvertFit(
             kstar.fit, "gKstarInvariantFit",
-            0.05, 30.0, kOrange + 7);
+            0.05, 30.0, colorKstar);
 
         auto *phiFit = ConvertFit(
             phi.fit, "gPhiInvariantFit",
-            0.05, 20.0, kCyan + 2);
+            0.05, 20.0, colorPhi);
 
-        // ------------------------------------------------------------
-        // Styles
-        // ------------------------------------------------------------
+        SetGraphStyle(kstarStat, colorKstar, 1.0, 20, 1.0, 1);
+        SetGraphStyle(phiStat, colorPhi, 1.0, 20, 1.0, 1);
 
-        SetGraphStyle(kstarStat, kOrange + 7, 1.0, 20, 0.8, 1);
-        SetGraphStyle(phiStat, kCyan + 2, 1.0, 20, 0.8, 1);
-
-        kstarSys->SetLineColor(kOrange + 7);
-        kstarSys->SetFillColorAlpha(kOrange + 7, 0.20);
+        kstarSys->SetLineColor(colorKstar);
+        kstarSys->SetFillColorAlpha(colorKstar, 0.20);
         kstarSys->SetFillStyle(0);
 
-        phiSys->SetLineColor(kCyan + 2);
-        phiSys->SetFillColorAlpha(kCyan + 2, 0.20);
+        phiSys->SetLineColor(colorPhi);
+        phiSys->SetFillColorAlpha(colorPhi, 0.20);
         phiSys->SetFillStyle(0);
 
         // ------------------------------------------------------------
@@ -1365,10 +1401,10 @@ namespace CrossSectionPlot
         label.DrawLatex(0.45, 0.87, "#bf{ALICE}");
 
         label.SetTextSize(0.045);
-        label.DrawLatex(0.45, 0.81,"pp, #sqrt{s} = 13.6 TeV, |y| < 0.5");
+        label.DrawLatex(0.45, 0.81, "pp, #sqrt{s} = 13.6 TeV, |y| < 0.5");
 
         label.SetTextSize(0.038);
-        label.DrawLatex(0.25, 0.19,"Global norm. unc. 2.6% (not shown)");
+        label.DrawLatex(0.25, 0.19, "Global norm. unc. 2.6% (not shown)");
 
         c->SaveAs("../figures/KstarPhi_InvariantCrossSection_13p6TeV.pdf");
     }
@@ -1474,8 +1510,11 @@ namespace CrossSectionPlot
         // Styles
         // ------------------------------------------------------------
 
-        SetStyle(phi, kCyan + 2, 20);
-        SetStyle(kstar, kOrange + 7, 20);
+        const int colorKstar = PaperColors::GetROOTColor(PaperColors::kKstar);
+        const int colorPhi = PaperColors::GetROOTColor(PaperColors::kPhi);
+
+        SetStyle(kstar, colorKstar, 20);
+        SetStyle(phi, colorPhi, 20);
 
         // ------------------------------------------------------------
         // Canvas and pads
