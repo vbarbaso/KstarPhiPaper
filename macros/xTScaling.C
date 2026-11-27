@@ -1381,7 +1381,7 @@ namespace CrossSectionPlot
         // Legend
         // ------------------------------------------------------------
 
-        auto *legend = new TLegend(0.55, 0.55, 0.85, 0.75);
+        auto *legend = new TLegend(0.61, 0.75, 0.9, 0.92);
         SetLegend(legend);
         legend->SetTextSize(0.045);
         legend->AddEntry(kstarStat, "K*^{0} + #bar{K*}^{0}", "p");
@@ -1397,11 +1397,11 @@ namespace CrossSectionPlot
         label.SetNDC();
         label.SetTextFont(42);
 
-        label.SetTextSize(0.055);
-        label.DrawLatex(0.45, 0.87, "#bf{ALICE}");
+        label.SetTextSize(0.042);
+        label.DrawLatex(0.3, 0.89, "#bf{ALICE}");
 
         label.SetTextSize(0.045);
-        label.DrawLatex(0.45, 0.81, "pp, #sqrt{s} = 13.6 TeV, |y| < 0.5");
+        label.DrawLatex(0.45, 0.81,"pp, #sqrt{s} = 13.6 TeV, |y| < 0.5");
 
         label.SetTextSize(0.038);
         label.DrawLatex(0.25, 0.19, "Global norm. unc. 2.6% (not shown)");
@@ -1437,7 +1437,8 @@ namespace CrossSectionPlot
         // Phi: Run 3
         // ------------------------------------------------------------
 
-        TFile *fPhi = TFile::Open(Form("%soutputs/CBT_hadronPID/inel/PAR.root", root), "READ");
+        // TFile *fPhi = TFile::Open(Form("%soutputs/CBT_hadronPID/inel/PAR.root", root), "READ");
+        TFile *fPhi = TFile::Open(("../inputs/Phi_136/inel/PAR.root"), "READ");
 
         if (!fPhi || fPhi->IsZombie())
         {
